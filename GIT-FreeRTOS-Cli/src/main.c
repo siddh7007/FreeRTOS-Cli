@@ -28,7 +28,14 @@
 /*=================================================================================================
   LOCAL DEFINITIONS
 =================================================================================================*/
+/* The size of the stack and the priority used by the two echo client tasks. */
+#define mainECHO_CLIENT_TASK_STACK_SIZE 	( configMINIMAL_STACK_SIZE * 2 )
+#define mainECHO_CLIENT_TASK_PRIORITY		( tskIDLE_PRIORITY + 1 )
 
+/* The size of the stack and the priority used by the USB CDC command console
+task. */
+#define mainCDC_COMMAND_CONSOLE_STACK_SIZE		( configMINIMAL_STACK_SIZE * 2 )
+#define mainCDC_COMMAND_CONSOLE_TASK_PRIORITY	( 4U )
 /*==================================================================================================
   LOCAL FUNCTIONS
 ==================================================================================================*/
@@ -117,6 +124,7 @@ void vApplicationTickHook(void)
   Parameters  : None
   Returns     : None
 ==================================================================================================*/
+xSemaphoreHandle read_byte = 0;
 
 void vApplicationMallocFailedHook(void)
 {
@@ -134,7 +142,6 @@ void vApplicationMallocFailedHook(void)
 
 int main(void)
 {
-  GPIO_InitTypeDef   GPIO_InitStructure;
 
   /* At this point the microcontroller clock is already set, which is done through SystemInit()
    * function. This is done by means of the C runtime initialization (crt.c), which, afterwards,
@@ -148,12 +155,20 @@ int main(void)
 
   SystemInit();
 
+  UART_Config(9600);
+
+  LED_Config();
+
+
+
+
   /* Most systems default to the wanted configuration, with the noticeable exception of the STM32
    * driver library. If you are using an STM32 with the STM32 driver library then ensure all the
    * priority bits are assigned to be preempt priority bits by calling
    * NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4) before the RTOS is started.
    */
 
+ // vSemaphoreCreateBinary(read_byte);
 
 	/* Set the Vector Table base address at 0x08000000 */
   NVIC_SetVectorTable( NVIC_VectTab_FLASH, 0x0 );
@@ -161,30 +176,15 @@ int main(void)
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
 
   SysTick_CLKSourceConfig( SysTick_CLKSource_HCLK );
-  // GPIOD Peripheral clock enable.
-  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
 
-  /* LED's configuration:
-   * LD3: GPIO PD13 (0: OFF, 1: ON)
-   * LD4: GPIO PD12 (0: OFF, 1: ON)
-   * LD5: GPIO PD14 (0: OFF, 1: ON)
-   * LD6: GPIO PD15 (0: OFF, 1: ON)
-   *
-   * Configures PD12, PD13, PD14 and PD15 in output mode.
-   */
-  GPIO_InitStructure.GPIO_Pin   = LED4_PIN | LED3_PIN | LED5_PIN | LED6_PIN;
-  GPIO_InitStructure.GPIO_Mode  = GPIO_Mode_OUT;
-  GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-  GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;
-  GPIO_InitStructure.GPIO_PuPd  = GPIO_PuPd_NOPULL;
-  GPIO_Init(GPIOD, &GPIO_InitStructure);
+  vUARTCommandConsoleStart( mainCDC_COMMAND_CONSOLE_STACK_SIZE, mainCDC_COMMAND_CONSOLE_TASK_PRIORITY );
 
   // The task for blinking the led's is created. It is called just after the scheduler is started.
   xTaskCreate(  leds_blink_task           ,
                 "leds_blink_task"         ,
                 configMINIMAL_STACK_SIZE  ,
                 NULL                      ,
-                2        				  ,
+                0     				  ,
                 NULL                      );
 
   // It is started the scheduler.
@@ -212,6 +212,9 @@ int main(void)
 static void leds_blink_task(void * parameters)
 {
   for (;;) {
+
+	USART_SendData(USART1, " <<<<<<<<<<<<<<<<<<< STM32 USART >>>>>>>>>>>>>>>>>>>>\n \r ");
+
     GPIO_SetBits(GPIOD, LED4_PIN); // LED4 ON
     vTaskDelay(1000);
     GPIO_SetBits(GPIOD, LED3_PIN); // LED3 ON

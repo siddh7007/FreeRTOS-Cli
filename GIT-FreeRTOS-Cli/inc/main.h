@@ -8,6 +8,13 @@
 #include "stm32f4xx.h"
 #include "stm32f4_discovery.h"
 
+//UART AND OTHER PERIFERLS
+#include "peripherals.h"
+#include "uartserial.h"
+#include <misc.h>
+#include <stm32f4xx_usart.h>
+
+
 // FreeRTOS
 #include "FreeRTOS.h"
 #include "task.h"
@@ -27,5 +34,35 @@ extern int main(void);
 
 
 #define logoElementsDelay() delayMillis(500);
+
+I2C_TypeDef I2C_1;
+GPIO_InitTypeDef GPIO_InitStructureuart;
+GPIO_InitTypeDef GPIO_InitStructure;
+USART_InitTypeDef USART_InitStructure;
+
+/* Private define ------------------------------------------------------------*/
+
+#define BUFFER_SIZE 32
+
+/* Private macro -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+
+
+//notice the use of the volatile keyword this is important as without it the compiler may make
+//optimisations assuming the value of this variable hasnt changed
+volatile char received_buffer[BUFFER_SIZE+1];
+
+//static uint8_t DataReceivedCounter = 0; //tracks the number of characters received so far, reset after each command
+
+
+
+/* Private function prototypes -----------------------------------------------*/
+
+void USARTCommandReceived(char * command);
+void ClearCommand();
+void Delay(int nCount);
+void UART_Config(int baudrate);
+
+void vUARTCommandConsoleStart( uint16_t usStackSize, UBaseType_t uxPriority );
 
 #endif
