@@ -81,6 +81,7 @@
 
 /* Demo application includes. */
 #include "serial.h"
+#include "stm32f4xx_it.h"
 /*-----------------------------------------------------------*/
 
 /* Misc defines. */
@@ -108,10 +109,7 @@ xComPortHandle xSerialPortInitMinimal( unsigned long ulWantedBaud, unsigned port
 {
 xComPortHandle xReturn;
 
-//structures used configure the hardware
-GPIO_InitTypeDef GPIO_InitStruct;
-USART_InitTypeDef USART_InitStruct;
-NVIC_InitTypeDef NVIC_InitStructure;
+
 
 	/* Create the queues used to hold Rx/Tx characters. */
 	xRxedChars = xQueueCreate( uxQueueLength, ( unsigned portBASE_TYPE ) sizeof( signed char ) );
@@ -122,39 +120,8 @@ NVIC_InitTypeDef NVIC_InitStructure;
 	if( ( xRxedChars != serINVALID_QUEUE ) && ( xCharsForTx != serINVALID_QUEUE ) )
 	{
 
-			//enable the clocks for the GPIOB and the USART1
-			RCC_APB2PeriphClockCmd(RCC_APB2Periph_USART1, ENABLE);
-			RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOB, ENABLE);
+		UART_Config(9600);
 
-			//Initialize pins GPIOB 6 and GPIOB 7
-			GPIO_InitStruct.GPIO_Pin = GPIO_Pin_6 | GPIO_Pin_7;
-			GPIO_InitStruct.GPIO_Mode = GPIO_Mode_AF; //we are setting the pin to be alternative function
-			GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
-			GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
-			GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
-			GPIO_Init(GPIOB, &GPIO_InitStruct);
-
-			//Connect the TX and RX pins to their alternate function pins
-			GPIO_PinAFConfig(GPIOB, GPIO_PinSource6, GPIO_AF_USART1); //
-			GPIO_PinAFConfig(GPIOB, GPIO_PinSource7, GPIO_AF_USART1);
-
-			//configure USART
-			USART_InitStruct.USART_BaudRate = 9600;
-			USART_InitStruct.USART_WordLength = USART_WordLength_8b;
-			USART_InitStruct.USART_StopBits = USART_StopBits_1;
-			USART_InitStruct.USART_Parity = USART_Parity_No;
-			USART_InitStruct.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
-			USART_InitStruct.USART_Mode = USART_Mode_Tx | USART_Mode_Rx; //enable send and receive (Tx and Rx)
-			USART_Init(USART1, &USART_InitStruct);
-
-			//Enable the interrupt
-			USART_ITConfig(USART1, USART_IT_RXNE, ENABLE);
-
-			NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-			NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-			NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
-			NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
-			NVIC_Init(&NVIC_InitStructure);
 
 	}
 	else
@@ -175,6 +142,7 @@ signed portBASE_TYPE xSerialGetChar( xComPortHandle pxPort, signed char *pcRxedC
 
 	/* Get the next character from the buffer.  Return false if no characters
 	are available, or arrive before xBlockTime expires. */
+
 	if( xQueueReceive( xRxedChars, pcRxedChar, xBlockTime ) )
 	{
 		return pdTRUE;
@@ -182,6 +150,7 @@ signed portBASE_TYPE xSerialGetChar( xComPortHandle pxPort, signed char *pcRxedC
 	else
 	{
 		return pdFALSE;
+
 	}
 }
 /*-----------------------------------------------------------*/

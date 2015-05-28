@@ -2,6 +2,9 @@
 #define _MAIN_H
 
 #include <stdio.h>
+#include <stdint.h>
+#include <stdlib.h>
+#include <string.h>
 
 
 // board
@@ -19,11 +22,9 @@
 #include "FreeRTOS.h"
 #include "task.h"
 #include "semphr.h"
+#include "FreeRTOS_CLI.h"
 
 
-#include <stdint.h>
-#include <stdlib.h>
-#include <string.h>
 
 extern void vApplicationIdleHook(void);
 extern void vApplicationStackOverflowHook(TaskHandle_t xTask, signed char *pcTaskName);
@@ -57,7 +58,7 @@ volatile char received_buffer[BUFFER_SIZE+1];
 
 
 /* Private function prototypes -----------------------------------------------*/
-
+void UART_write(USART_TypeDef* USARTx, volatile char *s);
 void USARTCommandReceived(char * command);
 void ClearCommand();
 void Delay(int nCount);

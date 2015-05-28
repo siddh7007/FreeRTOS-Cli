@@ -34,11 +34,30 @@
 
 /* The size of the stack and the priority used by the USB CDC command console
 task. */
-#define mainCDC_COMMAND_CONSOLE_STACK_SIZE		( configMINIMAL_STACK_SIZE * 2 )
-#define mainCDC_COMMAND_CONSOLE_TASK_PRIORITY	( 4U )
+#define mainUART_COMMAND_CONSOLE_STACK_SIZE		( configMINIMAL_STACK_SIZE * 2 )
+#define mainUART_COMMAND_CONSOLE_TASK_PRIORITY	4
 /*==================================================================================================
   LOCAL FUNCTIONS
 ==================================================================================================*/
+
+
+void vConfigureTimerForRunTimeStats( void )
+{
+const unsigned long TCR_COUNT_RESET = 2, CTCR_CTM_TIMER = 0x00, TCR_COUNT_ENABLE = 0x01;
+
+    /* Power up and feed the timer with a clock. */
+
+    /* Reset Timer 0 */
+
+    /* Just count up. */
+
+    /* Prescale to a frequency that is good enough to get a decent resolution,
+    but not too fast so as to overflow all the time. */
+
+    /* Start the counter. */
+
+}
+
 
 static void leds_blink_task(void * parameters);
 
@@ -155,8 +174,6 @@ int main(void)
 
   SystemInit();
 
-  UART_Config(9600);
-
   LED_Config();
 
 
@@ -177,7 +194,9 @@ int main(void)
 
   SysTick_CLKSourceConfig( SysTick_CLKSource_HCLK );
 
-  vUARTCommandConsoleStart( mainCDC_COMMAND_CONSOLE_STACK_SIZE, mainCDC_COMMAND_CONSOLE_TASK_PRIORITY );
+  vRegisterCLICommands();
+
+  vUARTCommandConsoleStart( mainUART_COMMAND_CONSOLE_STACK_SIZE, mainUART_COMMAND_CONSOLE_TASK_PRIORITY );
 
   // The task for blinking the led's is created. It is called just after the scheduler is started.
   xTaskCreate(  leds_blink_task           ,
@@ -187,7 +206,10 @@ int main(void)
                 0     				  ,
                 NULL                      );
 
+  NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
+
   // It is started the scheduler.
+
   vTaskStartScheduler();
 
   /* If all is well, the scheduler will now be running, and the following line will never be reached.
@@ -213,10 +235,9 @@ static void leds_blink_task(void * parameters)
 {
   for (;;) {
 
-	USART_SendData(USART1, " <<<<<<<<<<<<<<<<<<< STM32 USART >>>>>>>>>>>>>>>>>>>>\n \r ");
-
-    GPIO_SetBits(GPIOD, LED4_PIN); // LED4 ON
-    vTaskDelay(1000);
+	//UART_write(USART1, " <<<<<<<<<<<<<<<<<<< STM32 USART >>>>>>>>>>>>>>>>>>>>\n \r ");
+	GPIO_SetBits(GPIOD, LED4_PIN); // LED4 ON
+	vTaskDelay(1000);
     GPIO_SetBits(GPIOD, LED3_PIN); // LED3 ON
     vTaskDelay(1000);
     GPIO_SetBits(GPIOD, LED5_PIN); // LED5 ON

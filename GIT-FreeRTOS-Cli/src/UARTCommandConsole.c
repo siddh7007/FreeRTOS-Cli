@@ -173,6 +173,8 @@ xComPortHandle xPort;
 		be a genuine block time rather than an infinite block time. */
 		while( xSerialGetChar( xPort, &cRxedChar, portMAX_DELAY ) != pdPASS );
 
+		//vSerialPutString( xPort, &cRxedChar, 1);
+
 		/* Ensure exclusive access to the UART Tx. */
 		if( xSemaphoreTake( xTxMutex, cmdMAX_MUTEX_WAIT ) == pdPASS )
 		{
