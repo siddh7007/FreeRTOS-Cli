@@ -23,6 +23,10 @@
 #ifndef __STM32F4xx_IT_H
 #define __STM32F4xx_IT_H
 
+#include "stm32f4xx.h"
+#include "stm32f4_discovery.h"
+#include "FreeRTOS.h"
+
 #ifdef __cplusplus
  extern "C" {
 #endif 
@@ -46,8 +50,10 @@ void DebugMon_Handler(void);
 void PendSV_Handler(void);
 void SysTick_Handler(void);
 void USART1_IRQHandler(void);
+void TIM3_IRQHandler(void);
 
 void vUARTInterruptHandler( void );
+extern void updatetasktimtick(void) ;
 
 #ifdef __cplusplus
 }

@@ -134,11 +134,22 @@ void DebugMon_Handler(void)
 {
 }
 
+/*=========================== UART1 Interrupt handler =================================*/
+
 void USART1_IRQHandler(void)
 {
-
-
-
     vUARTInterruptHandler();
+}
+
+/*=========================== TIM3 Interrupt handler ==================================*/
+
+void TIM3_IRQHandler(void)
+{
+  if (TIM_GetITStatus(TIM3, TIM_IT_CC1 ) != RESET)
+  {
+
+    TIM_ClearITPendingBit(TIM3, TIM_IT_CC1 );
+    updatetasktimtick() ;
+  }
 }
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

@@ -97,7 +97,7 @@ extern uint32_t SystemCoreClock;
 #define configTICK_RATE_HZ				( ( TickType_t ) 1000 )
 #define configMAX_PRIORITIES			( 5 )
 #define configMINIMAL_STACK_SIZE		( ( unsigned short ) 130 )
-#define configTOTAL_HEAP_SIZE			( ( size_t ) ( 75 * 1024 ) )
+#define configTOTAL_HEAP_SIZE			( ( size_t ) ( 250 * 1024 ) )
 #define configMAX_TASK_NAME_LEN			( 10 )
 #define configUSE_TRACE_FACILITY		1
 #define configUSE_16_BIT_TICKS			0
@@ -126,16 +126,18 @@ to exclude the API function. */
 #define INCLUDE_vTaskPrioritySet		1
 #define INCLUDE_uxTaskPriorityGet		1
 #define INCLUDE_vTaskDelete				1
-#define INCLUDE_vTaskCleanUpResources	1
-#define INCLUDE_vTaskSuspend			1
+#define INCLUDE_vTaskCleanUpResources	0
+#define INCLUDE_vTaskSuspend			0
 #define INCLUDE_vTaskDelayUntil			1
 #define INCLUDE_vTaskDelay				1
 
 
 #define configUSE_STATS_FORMATTING_FUNCTIONS	1
-extern void vConfigureTimerForRunTimeStats( void );
-#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() vConfigureTimerForRunTimeStats()
-#define portGET_RUN_TIME_COUNTER_VALUE() 0x0f
+extern volatile unsigned long ulHighFrequencyTimerTick;
+/* ulHighFrequencyTimerTicks is already being incremented at 20KHz.  Just set
+its value back to 0. */
+#define portCONFIGURE_TIMER_FOR_RUN_TIME_STATS() ( ulHighFrequencyTimerTick = 0UL )
+#define portGET_RUN_TIME_COUNTER_VALUE()	ulHighFrequencyTimerTick
 
 /* Cortex-M specific definitions. */
 #ifdef __NVIC_PRIO_BITS

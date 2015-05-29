@@ -29,35 +29,58 @@
   LOCAL DEFINITIONS
 =================================================================================================*/
 /* The size of the stack and the priority used by the two echo client tasks. */
-#define mainECHO_CLIENT_TASK_STACK_SIZE 	( configMINIMAL_STACK_SIZE * 2 )
+#define mainECHO_CLIENT_TASK_STACK_SIZE 	( configMINIMAL_STACK_SIZE * 10 )
 #define mainECHO_CLIENT_TASK_PRIORITY		( tskIDLE_PRIORITY + 1 )
 
 /* The size of the stack and the priority used by the USB CDC command console
 task. */
 #define mainUART_COMMAND_CONSOLE_STACK_SIZE		( configMINIMAL_STACK_SIZE * 2 )
 #define mainUART_COMMAND_CONSOLE_TASK_PRIORITY	4
+
+#define   CNT_FREQ         21000000                           // TIM3 counter clock (prescaled APB1)
+#define   IT_PER_SEC       2000                               // Interrupts per second
+#define   TIM3_PULSE       ((CNT_FREQ) / (IT_PER_SEC))        // Output compare reg value
+
 /*==================================================================================================
   LOCAL FUNCTIONS
 ==================================================================================================*/
-
+volatile unsigned long ulHighFrequencyTimerTick = 0UL;
 
 void vConfigureTimerForRunTimeStats( void )
 {
-const unsigned long TCR_COUNT_RESET = 2, CTCR_CTM_TIMER = 0x00, TCR_COUNT_ENABLE = 0x01;
 
-    /* Power up and feed the timer with a clock. */
+	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
+	TIM_OCInitTypeDef       TIM3_OC;
+	TIM_Config();
 
-    /* Reset Timer 0 */
+	 //(uint16_t) PrescalerValue = (uint16_t) ((SystemCoreClock /2) / 28000000) - 1;
+	//PrescalerValue = (uint16_t) 0;
+	  /* Time base configuration */
 
-    /* Just count up. */
+	  TIM_TimeBaseStructure.TIM_Period = 65535;
+	  TIM_TimeBaseStructure.TIM_Prescaler = 3 ;
+	  TIM_TimeBaseStructure.TIM_ClockDivision = 0;
+	  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
-    /* Prescale to a frequency that is good enough to get a decent resolution,
-    but not too fast so as to overflow all the time. */
+	  TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 
-    /* Start the counter. */
+	  TIM3_OC.TIM_OCMode      = TIM_OCMode_Toggle;                // Output compare toggling mode
+	  TIM3_OC.TIM_OutputState = TIM_OutputState_Enable;           // Enabling the Output Compare state
+	  TIM3_OC.TIM_OCPolarity  = TIM_OCPolarity_Low;               // Reverse polarity
+	  TIM3_OC.TIM_Pulse       = TIM3_PULSE ;                       // Output Compare 1 reg value
+	  TIM_OC1Init(TIM3, &TIM3_OC);                                // Initializing Output Compare 1 structure
+	  TIM_OC1PreloadConfig(TIM3, TIM_OCPreload_Disable);          // Disabling Ch.1 Output Compare preload
+
+	  TIM_Cmd(TIM3, ENABLE);                                      // Ready, Set, Go!
+	  TIM_ITConfig(TIM3, TIM_IT_CC1, ENABLE);                     // Enabling TIM3 Ch.1 interrupts
 
 }
 
+void updatetasktimtick(void)
+{
+	ulHighFrequencyTimerTick++ ;
+	STM_EVAL_LEDToggle(LED3);
+}
 
 static void leds_blink_task(void * parameters);
 
@@ -203,10 +226,12 @@ int main(void)
                 "leds_blink_task"         ,
                 configMINIMAL_STACK_SIZE  ,
                 NULL                      ,
-                0     				  ,
+                0     				      ,
                 NULL                      );
 
   NVIC_PriorityGroupConfig(NVIC_PriorityGroup_4);
+
+  vConfigureTimerForRunTimeStats();
 
   // It is started the scheduler.
 

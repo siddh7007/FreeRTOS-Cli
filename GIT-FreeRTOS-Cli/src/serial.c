@@ -173,8 +173,8 @@ signed char *pxNext;
 
 	UART_write(USART1, pcString);
 
-	/* Send each character in the string, one at a time.
-	pxNext = ( signed char * ) pcString;
+	//Send each character in the string, one at a time.
+/*	pxNext = ( signed char * ) pcString;
 	while( *pxNext )
 	{
 		xSerialPutChar( pxPort, *pxNext, serNO_BLOCK );
