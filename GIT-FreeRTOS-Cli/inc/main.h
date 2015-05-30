@@ -65,5 +65,6 @@ void Delay(int nCount);
 void UART_Config(int baudrate);
 
 void vUARTCommandConsoleStart( uint16_t usStackSize, UBaseType_t uxPriority );
+void vMotorControlStart( uint16_t mcStackSize, UBaseType_t mcPriority );
 
 #endif

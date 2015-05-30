@@ -171,15 +171,15 @@ signed char *pxNext;
 
 	pxNext = ( signed char * ) pcString;
 
-	UART_write(USART1, pcString);
+	//UART_write(USART1, pcString);
 
 	//Send each character in the string, one at a time.
-/*	pxNext = ( signed char * ) pcString;
+	pxNext = ( signed char * ) pcString;
 	while( *pxNext )
 	{
 		xSerialPutChar( pxPort, *pxNext, serNO_BLOCK );
 		pxNext++;
-	} */
+	}
 }
 
 void UART_write(USART_TypeDef* USARTx, volatile char *s){

@@ -143,12 +143,12 @@ void USART1_IRQHandler(void)
 
 /*=========================== TIM3 Interrupt handler ==================================*/
 
-void TIM3_IRQHandler(void)
+void TIM4_IRQHandler(void)
 {
-  if (TIM_GetITStatus(TIM3, TIM_IT_CC1 ) != RESET)
+  if (TIM_GetITStatus(TIM4, TIM_IT_CC1 ) != RESET)
   {
 
-    TIM_ClearITPendingBit(TIM3, TIM_IT_CC1 );
+    TIM_ClearITPendingBit(TIM4, TIM_IT_CC1 );
     updatetasktimtick() ;
   }
 }

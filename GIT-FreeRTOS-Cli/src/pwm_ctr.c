@@ -1,7 +1,42 @@
+#include "main.h"
 #include "pwm_ctr.h"
 
+/*-----------------------------------------------------------*/
+
+/*
+ * The task that implements the command console processing.
+ */
+static void prvMotorControlTask( void *pvParameters );
+void vMotorControlStart( uint16_t mcStackSize, UBaseType_t mcPriority );
 
 
+void vMotorControlStart( uint16_t mcStackSize, UBaseType_t mcPriority )
+{
+
+	/* Create the semaphore used to access the UART Tx.
+	xTxMutex = xSemaphoreCreateMutex();
+	configASSERT( xTxMutex ); */
+
+	/* Create that task that handles the console itself. */
+	xTaskCreate( 	prvMotorControlTask,	    /* The task that implements the Motor Control. */
+					"Stepper  MTR CTRL ",		/* Text name assigned to the task.  This is just to assist debugging.  The kernel does not use this name itself. */
+					mcStackSize,				/* The size of the stack allocated to the task. */
+					NULL,						/* The parameter is not used, so NULL is passed. */
+					mcPriority,					/* The priority allocated to the task. */
+					NULL );						/* A handle is not required, so just pass NULL. */
+}
+
+
+
+static void prvMotorControlTask( void *pvParameters )
+{
+
+while(1)
+{
+	vTaskDelay(1000);
+}
+
+}
 
 int pwm_initconfig()
 
@@ -39,7 +74,7 @@ int pwm_initconfig()
 
 	  /* Compute the prescaler value */
 	  PrescalerValue = (uint16_t) ((SystemCoreClock /2) / 56000000) - 1;
-	  //PrescalerValue = (uint16_t) 0;
+	//PrescalerValue = (uint16_t)  0 ;
 	  /* Time base configuration */
 	  TIM_TimeBaseStructure.TIM_Period = 2;
 	  TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;

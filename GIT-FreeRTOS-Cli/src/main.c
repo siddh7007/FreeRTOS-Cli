@@ -29,17 +29,20 @@
   LOCAL DEFINITIONS
 =================================================================================================*/
 /* The size of the stack and the priority used by the two echo client tasks. */
-#define mainECHO_CLIENT_TASK_STACK_SIZE 	( configMINIMAL_STACK_SIZE * 10 )
+#define mainECHO_CLIENT_TASK_STACK_SIZE 	( configMINIMAL_STACK_SIZE * 2 )
 #define mainECHO_CLIENT_TASK_PRIORITY		( tskIDLE_PRIORITY + 1 )
 
 /* The size of the stack and the priority used by the USB CDC command console
 task. */
-#define mainUART_COMMAND_CONSOLE_STACK_SIZE		( configMINIMAL_STACK_SIZE * 2 )
-#define mainUART_COMMAND_CONSOLE_TASK_PRIORITY	4
+#define mainUART_COMMAND_CONSOLE_STACK_SIZE		( configMINIMAL_STACK_SIZE * 10 )
+#define mainUART_COMMAND_CONSOLE_TASK_PRIORITY  	4
 
-#define   CNT_FREQ         21000000                           // TIM3 counter clock (prescaled APB1)
+#define MOTOR_CONTROL_STACK_SIZE		( configMINIMAL_STACK_SIZE * 2 )
+#define MOTOR_CONTROL_TASK_PRIORITY	0
+
+#define   CNT_FREQ         21000000                           // TIM4 counter clock (prescaled APB1)
 #define   IT_PER_SEC       2000                               // Interrupts per second
-#define   TIM3_PULSE       ((CNT_FREQ) / (IT_PER_SEC))        // Output compare reg value
+#define   TIM4_PULSE       ((CNT_FREQ) / (IT_PER_SEC))        // Output compare reg value
 
 /*==================================================================================================
   LOCAL FUNCTIONS
@@ -50,8 +53,9 @@ void vConfigureTimerForRunTimeStats( void )
 {
 
 	TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
-	TIM_OCInitTypeDef       TIM3_OC;
-	TIM_Config();
+	TIM_OCInitTypeDef       TIM4_OC;
+
+	TIM4_Config();
 
 	 //(uint16_t) PrescalerValue = (uint16_t) ((SystemCoreClock /2) / 28000000) - 1;
 	//PrescalerValue = (uint16_t) 0;
@@ -62,17 +66,17 @@ void vConfigureTimerForRunTimeStats( void )
 	  TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 	  TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
-	  TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
+	  TIM_TimeBaseInit(TIM4, &TIM_TimeBaseStructure);
 
-	  TIM3_OC.TIM_OCMode      = TIM_OCMode_Toggle;                // Output compare toggling mode
-	  TIM3_OC.TIM_OutputState = TIM_OutputState_Enable;           // Enabling the Output Compare state
-	  TIM3_OC.TIM_OCPolarity  = TIM_OCPolarity_Low;               // Reverse polarity
-	  TIM3_OC.TIM_Pulse       = TIM3_PULSE ;                       // Output Compare 1 reg value
-	  TIM_OC1Init(TIM3, &TIM3_OC);                                // Initializing Output Compare 1 structure
-	  TIM_OC1PreloadConfig(TIM3, TIM_OCPreload_Disable);          // Disabling Ch.1 Output Compare preload
+	  TIM4_OC.TIM_OCMode      = TIM_OCMode_Toggle;                // Output compare toggling mode
+	  TIM4_OC.TIM_OutputState = TIM_OutputState_Enable;           // Enabling the Output Compare state
+	  TIM4_OC.TIM_OCPolarity  = TIM_OCPolarity_Low;               // Reverse polarity
+	  TIM4_OC.TIM_Pulse       = TIM4_PULSE ;                       // Output Compare 1 reg value
+	  TIM_OC1Init(TIM4, &TIM4_OC);                                // Initializing Output Compare 1 structure
+	  TIM_OC1PreloadConfig(TIM4, TIM_OCPreload_Disable);          // Disabling Ch.1 Output Compare preload
 
-	  TIM_Cmd(TIM3, ENABLE);                                      // Ready, Set, Go!
-	  TIM_ITConfig(TIM3, TIM_IT_CC1, ENABLE);                     // Enabling TIM3 Ch.1 interrupts
+	  TIM_Cmd(TIM4, ENABLE);                                      // Ready, Set, Go!
+	  TIM_ITConfig(TIM4, TIM_IT_CC1, ENABLE);                     // Enabling TIM4 Ch.1 interrupts
 
 }
 
@@ -220,6 +224,8 @@ int main(void)
   vRegisterCLICommands();
 
   vUARTCommandConsoleStart( mainUART_COMMAND_CONSOLE_STACK_SIZE, mainUART_COMMAND_CONSOLE_TASK_PRIORITY );
+
+  vMotorControlStart( MOTOR_CONTROL_STACK_SIZE,  MOTOR_CONTROL_TASK_PRIORITY );
 
   // The task for blinking the led's is created. It is called just after the scheduler is started.
   xTaskCreate(  leds_blink_task           ,
