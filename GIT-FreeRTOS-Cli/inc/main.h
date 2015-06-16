@@ -13,7 +13,6 @@
 
 //UART AND OTHER PERIFERLS
 #include "peripherals.h"
-#include "uartserial.h"
 #include <misc.h>
 #include <stm32f4xx_usart.h>
 
@@ -66,5 +65,5 @@ void UART_Config(int baudrate);
 
 void vUARTCommandConsoleStart( uint16_t usStackSize, UBaseType_t uxPriority );
 void vMotorControlStart( uint16_t mcStackSize, UBaseType_t mcPriority );
-
+void vLEDControlStart( uint16_t lcStackSize, UBaseType_t lcPriority );
 #endif

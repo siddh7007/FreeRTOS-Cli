@@ -5,10 +5,9 @@
  *      Author: patels
  */
 
-#ifndef PWM_CTR_H_
-#define PWM_CTR_H_
+#ifndef STEPPERCONTROLTASK_H_
+#define STEPPERCONTROLTASK_H_
 
-#include <stm32f4xx.h>
 #include <stm32f4xx.h>
 #include <misc.h>
 #include <stm32f4xx_usart.h>
@@ -33,8 +32,13 @@ int dataAdd = 0;
 int i = 0 ;
 
 
-int pwm_initconfig(void);
+int pwm_initconfig(int);
+int pwm_deinitconfig(void);
+void Stepper_Direction(int);
 int setpwm_freq_dutycycle(int,int);
+void Stepper_Control(int);
+void Encoder_Reset(void);
+int32_t Encoder_Read(void);
+void motor_steps(int32_t);
 
-
-#endif /* PWM_CTR_H_ */
+#endif /* STEPPERCONTROLTASK_H_ */
