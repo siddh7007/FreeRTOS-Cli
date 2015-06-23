@@ -32,7 +32,7 @@ int dataAdd = 0;
 int i = 0 ;
 
 
-int pwm_initconfig(int);
+int pwm_initconfig(int,int);
 int pwm_deinitconfig(void);
 void Stepper_Direction(int);
 int setpwm_freq_dutycycle(int,int);
@@ -40,5 +40,5 @@ void Stepper_Control(int);
 void Encoder_Reset(void);
 int32_t Encoder_Read(void);
 void motor_steps(int32_t);
-
+void cycle_counter(void);
 #endif /* STEPPERCONTROLTASK_H_ */

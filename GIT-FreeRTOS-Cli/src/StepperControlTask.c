@@ -9,7 +9,9 @@ volatile int32_t Codeur_total;
 int8_t RotationDirection_CW = 1 ;
 int8_t RotationDirection_CCW = 0 ;
 int32_t count = 0;
-
+volatile char *wr[32] ;
+int n = 0 ;
+int m = 0;
 //LOCAL
 static volatile int16_t Codeur_old;
 static volatile int16_t Codeur_actual;
@@ -42,7 +44,7 @@ void vMotorControlStart( uint16_t mcStackSize, UBaseType_t mcPriority )
 
 static void prvMotorControlTask( void *pvParameters )
 {
-
+	//pwm_initconfig(5000);
 while(1)
 {
 	vTaskDelay(1000);
@@ -50,12 +52,12 @@ while(1)
 
 }
 
-int pwm_initconfig(int OutFreq)
+int pwm_initconfig(int OutFreq,int steps)
 
 {
 
-	Stepper_Control(ENABLE);
-		PWM_TIM3_Config();
+		Stepper_Control(ENABLE);
+		TIM3_Config();
 
 		TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 		TIM_OCInitTypeDef  TIM_OCInitStructure;
@@ -93,9 +95,13 @@ int pwm_initconfig(int OutFreq)
 
 
 		TIM_ARRPreloadConfig(TIM3, ENABLE);
+		m = steps;
+		GPIO_SetBits(GPIOD, GPIO_Pin_15);
+		sprintf(wr, "************* Start: Freq = %d Steps = %d \r ", OutFreq, steps);
+	    UART_write(USART1, wr);
 
 		// TIM IT enable
-		// TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
+		TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
 
 		// TIM3 enable counter
 		TIM_Cmd(TIM3, ENABLE);
@@ -107,7 +113,13 @@ int pwm_initconfig(int OutFreq)
 int pwm_deinitconfig(void)
 
 {
+	sprintf(wr, "************* Stop: finished Steps = %d \r ", n);
+    UART_write(USART1, wr);
+    GPIO_ResetBits(GPIOD, GPIO_Pin_15);
+    n= 0;
+    m =0;
 	Stepper_Control(DISABLE);
+	TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
 	TIM_Cmd(TIM3, DISABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, DISABLE);
 //	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, DISABLE);
@@ -158,9 +170,16 @@ void Encoder_Reset(void)
 
 }
 
-setpwm_freq_dutycycle(int freq,int dutycycle)
+
+void cycle_counter()
 
 {
+	  if ((n == m)) {
+		  pwm_deinitconfig();
 
+		  n = 0 ;
+	  }
 
+	  else n++ ;
 }
+

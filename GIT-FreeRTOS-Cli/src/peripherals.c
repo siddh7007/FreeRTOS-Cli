@@ -44,7 +44,7 @@ void TIM3_Config(void)
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC | RCC_AHB1Periph_GPIOB, ENABLE);
 
 	  NVIC_TIM3.NVIC_IRQChannel                   = TIM3_IRQn;    // Specifying the channel (stm32f4xx.h)
-	  NVIC_TIM3.NVIC_IRQChannelPreemptionPriority = 0;            // Only matters for multiple interrupts
+	  NVIC_TIM3.NVIC_IRQChannelPreemptionPriority = 7;            // Only matters for multiple interrupts
 	  NVIC_TIM3.NVIC_IRQChannelSubPriority        = 0;            // Only matters for multiple interrupts
 	  NVIC_TIM3.NVIC_IRQChannelCmd                = ENABLE;       // Enabling global interrupt
 	  NVIC_Init(&NVIC_TIM3);                                      // Initializing NVIC structure
@@ -139,7 +139,7 @@ void UART_Config(int baudrate)
 
 
 	NVIC_InitStructure.NVIC_IRQChannel = USART1_IRQn;
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 6;
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 5;
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
 	NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
 	NVIC_Init(&NVIC_InitStructure);

@@ -35,7 +35,7 @@
 /* The size of the stack and the priority used by the USB CDC command console
 task. */
 #define mainUART_COMMAND_CONSOLE_STACK_SIZE		( configMINIMAL_STACK_SIZE * 10 )
-#define mainUART_COMMAND_CONSOLE_TASK_PRIORITY  	4
+#define mainUART_COMMAND_CONSOLE_TASK_PRIORITY  	1
 
 #define MOTOR_CONTROL_STACK_SIZE		( configMINIMAL_STACK_SIZE * 2 )
 #define MOTOR_CONTROL_TASK_PRIORITY	0
