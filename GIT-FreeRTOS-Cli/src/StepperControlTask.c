@@ -9,9 +9,13 @@ volatile int32_t Codeur_total;
 int8_t RotationDirection_CW = 1 ;
 int8_t RotationDirection_CCW = 0 ;
 int32_t count = 0;
+int32_t cyclecount;
 volatile char *wr[32] ;
 int n = 0 ;
 int m = 0;
+char CW = 1 ;
+char CCW = 0;
+
 //LOCAL
 static volatile int16_t Codeur_old;
 static volatile int16_t Codeur_actual;
@@ -52,7 +56,7 @@ while(1)
 
 }
 
-int pwm_initconfig(int OutFreq,int steps)
+int pwm_initconfig(uint32_t OutFreq,uint32_t steps)
 
 {
 
@@ -62,21 +66,27 @@ int pwm_initconfig(int OutFreq,int steps)
 		TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 		TIM_OCInitTypeDef  TIM_OCInitStructure;
 
-		uint16_t PrescalerValue = 0;
+		uint16_t PrescalerValue ;
 
 		// Compute the Pre-scaler value
 
-		int TimFreq, Period ;
+		uint32_t TimFreq;
+		uint16_t Period ;
 
-		TimFreq = 14000000 ;
-		//OutFreq = 5000 ;
-		Period  = 14000000/OutFreq ;
+		// TIM3 is 16bit timer so period,s max value can Be (0xffff) 65535
+		// that's why the lowest frequency we can achive is around 54 hz, with this config.
+
+		TimFreq = 7000000 ;
+		Period  = (TimFreq/OutFreq)- 1;
 
 		PrescalerValue = (uint16_t) ((SystemCoreClock /2) / TimFreq) - 1;
 
+		sprintf(wr, "************* Start: Prescal = %d period = %d \r\n ", PrescalerValue, Period);
+	    UART_write(USART1, wr);
+
 		//PrescalerValue = (uint16_t) 0;
 		//Time base configuration
-		TIM_TimeBaseStructure.TIM_Period = Period - 1;
+		TIM_TimeBaseStructure.TIM_Period = Period ;
 		TIM_TimeBaseStructure.TIM_Prescaler = PrescalerValue;
 		TIM_TimeBaseStructure.TIM_ClockDivision = 0;
 		TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_CenterAligned3;
@@ -84,7 +94,7 @@ int pwm_initconfig(int OutFreq,int steps)
 		TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
 
 		// PWM1 Mode configuration: Channel1
-		TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM1;
+		TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2;
 		TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
 		TIM_OCInitStructure.TIM_Pulse = Period / 2;
 		TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
@@ -97,7 +107,7 @@ int pwm_initconfig(int OutFreq,int steps)
 		TIM_ARRPreloadConfig(TIM3, ENABLE);
 		m = steps;
 		GPIO_SetBits(GPIOD, GPIO_Pin_15);
-		sprintf(wr, "************* Start: Freq = %d Steps = %d \r ", OutFreq, steps);
+		sprintf(wr, "************* Start: Freq = %d Steps = %d \r\n ", OutFreq, steps);
 	    UART_write(USART1, wr);
 
 		// TIM IT enable
@@ -113,16 +123,18 @@ int pwm_initconfig(int OutFreq,int steps)
 int pwm_deinitconfig(void)
 
 {
-	sprintf(wr, "************* Stop: finished Steps = %d \r ", n);
-    UART_write(USART1, wr);
-    GPIO_ResetBits(GPIOD, GPIO_Pin_15);
-    n= 0;
-    m =0;
+
 	Stepper_Control(DISABLE);
 	TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
 	TIM_Cmd(TIM3, DISABLE);
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, DISABLE);
-//	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, DISABLE);
+
+	sprintf(wr, "************* Stop: finished Steps = %d \r\n ", n/2);
+    UART_write(USART1, wr);
+    GPIO_ResetBits(GPIOD, GPIO_Pin_15);
+    n= 0;
+    m =0;
+
 	return 0 ;
 }
 
@@ -171,15 +183,74 @@ void Encoder_Reset(void)
 }
 
 
-void cycle_counter()
+void pulse_counter()
 
 {
 	  if ((n == m)) {
 		  pwm_deinitconfig();
-
-		  n = 0 ;
 	  }
 
 	  else n++ ;
 }
+
+
+//****************************** Clamp Related functions *****************************//
+
+
+void clamp_home(void)
+
+{
+	if (GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_14) & GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_15) )
+
+	{
+		do {
+
+			Stepper_Direction(CCW) ;
+			pwm_initconfig(1000,1000) ;
+
+		} while ( GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_14)) ;
+	}
+
+}
+
+int cycle_counter(int32_t Cycle)
+
+{
+	sprintf(wr, "************* Requested Clamp Cycle : %d \n\n ",Cycle);
+	UART_write(USART1, wr);
+	clamp_home();
+
+	do {
+			int a = 0 ;
+			do {
+
+				Stepper_Direction(CW) ;
+				pwm_initconfig(1000,1000) ;
+
+				} while ( a == GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_15)) ;
+
+			vTaskDelay(100);
+
+			do {
+
+				Stepper_Direction(CW) ;
+				pwm_initconfig(1000,1000) ;
+
+				} while ( a == GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_14)) ;
+
+
+
+			cyclecount++;
+			vTaskDelay(100);
+
+			sprintf(wr, "************* Clamp Cycle : %d \r\n ",cyclecount);
+			UART_write(USART1, wr);
+
+	} while (Cycle == cyclecount);
+
+	return 0;
+
+}
+
+
 

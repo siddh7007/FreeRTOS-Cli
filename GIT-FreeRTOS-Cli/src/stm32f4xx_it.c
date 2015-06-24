@@ -149,7 +149,7 @@ void TIM3_IRQHandler(void)
 {
   if (TIM_GetITStatus(TIM3, TIM_IT_Update ) != RESET)
   {
-	cycle_counter();
+	pulse_counter();
     TIM_ClearITPendingBit(TIM3, TIM_IT_Update );
 
   }

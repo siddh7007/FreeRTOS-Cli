@@ -25,6 +25,7 @@ void TIM4_Config(void);
 void I2C_Config(void);
 void LED_Config(void);
 void UART_Config(int baudrate);
+void OPTO_Config(void);
 
 
 #endif /* PERIPHERALS_H_ */

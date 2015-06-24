@@ -149,7 +149,7 @@ generates a table that shows how much run time each task has */
 static const CLI_Command_Definition_t xStepperControl =
 {
 	"step-motor", /* The command string to type. */
-	"\r\nstep-motor:\r\n Stepper Motor Control commands \r\n",
+	"\r\nstep-motor <Command> <frequency> <Steps>:\r\n Command start/stop \r\n PWM output frequency is 54Hz-7MHz \r\n",
 	prvStepperControlCommand, /* The function to run. */
 	3 /* No parameters are expected. */
 };
@@ -262,6 +262,9 @@ BaseType_t lParameterStringLength;
 	configASSERT( pcWriteBuffer );
 	uint32_t Freq, Steps ;
 	/* Obtain the parameter string. */
+
+	memset( pcWriteBuffer, 0x00, xWriteBufferLen );
+
 	pcParameter = FreeRTOS_CLIGetParameter
 					(
 						pcCommandString,		/* The command string itself. */
@@ -278,6 +281,7 @@ BaseType_t lParameterStringLength;
 					);
 
 	 Freq = atoi(pcParameter1);
+	 Freq = Freq*2;
 	//sprintf( pcWriteBuffer, "%s: ", pcParameter );
 
 	pcParameter1 = FreeRTOS_CLIGetParameter
@@ -288,6 +292,7 @@ BaseType_t lParameterStringLength;
 					);
 
 	 Steps = atoi(pcParameter1);
+	 Steps = Steps*2;
 	//sprintf( pcWriteBuffer, "%s: ", pcParameter );
 
 	/* Sanity check something was returned. */
@@ -307,11 +312,13 @@ BaseType_t lParameterStringLength;
 	{
 		/* End the trace, if one is running. */
 		pwm_deinitconfig();
+		memset( pcWriteBuffer, 0x00, xWriteBufferLen );
 		sprintf( pcWriteBuffer, "Stopping Stepper Motor.\n" );
 	}
 	else
 	{
-		sprintf( pcWriteBuffer, "Valid parameters are 'start' and 'stop'.\r\n" );
+		memset( pcWriteBuffer, 0x00, xWriteBufferLen );
+		sprintf( pcWriteBuffer, "Valid parameters are 'start' and 'stop'.\n" );
 	}
 
 	/* There is no more data to return after this single string, so return

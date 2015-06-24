@@ -117,6 +117,7 @@ GPIO_InitStructureuart
 GPIO_InitStructure  0x8               src\serial.o
 USART_InitStructure
                     0x10              src\serial.o
+cyclecount          0x4               src\StepperControlTask.o
 wr                  0x80              src\StepperControlTask.o
 NVIC_InitStructure  0x4               Utilities\stm32f4_discovery.o
 
@@ -523,6 +524,8 @@ Discarded input sections
                 0x00000000       0x54 src\peripherals.o
  .text.ENCR_Config
                 0x00000000       0xa0 src\peripherals.o
+ .text.OPTO_Config
+                0x00000000       0x38 src\peripherals.o
  .debug_macro   0x00000000      0x898 src\peripherals.o
  .debug_macro   0x00000000       0x63 src\peripherals.o
  .debug_macro   0x00000000       0x35 src\peripherals.o
@@ -877,6 +880,10 @@ Discarded input sections
                 0x00000000       0x8c src\StepperControlTask.o
  .text.Encoder_Reset
                 0x00000000       0x2c src\StepperControlTask.o
+ .text.clamp_home
+                0x00000000       0x58 src\StepperControlTask.o
+ .text.cycle_counter
+                0x00000000       0xd4 src\StepperControlTask.o
  .debug_macro   0x00000000      0x898 src\StepperControlTask.o
  .debug_macro   0x00000000       0x58 src\StepperControlTask.o
  .debug_macro   0x00000000       0x22 src\StepperControlTask.o
@@ -6146,7 +6153,7 @@ LOAD c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.w
                 0x08000000                g_pfnVectors
                 0x08000188                . = ALIGN (0x4)
 
-.text           0x08000188     0xa450
+.text           0x08000188     0xa548
                 0x08000188                . = ALIGN (0x4)
  *(.text)
  .text          0x08000188       0x5c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtbegin.o
@@ -6387,568 +6394,568 @@ LOAD c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.w
  .text.prvMotorControlTask
                 0x08001c68       0x14 src\StepperControlTask.o
  .text.pwm_initconfig
-                0x08001c7c       0xe8 src\StepperControlTask.o
+                0x08001c7c       0xfc src\StepperControlTask.o
                 0x08001c7c                pwm_initconfig
  .text.pwm_deinitconfig
-                0x08001d64       0x74 src\StepperControlTask.o
-                0x08001d64                pwm_deinitconfig
+                0x08001d78       0x78 src\StepperControlTask.o
+                0x08001d78                pwm_deinitconfig
  .text.Stepper_Control
-                0x08001dd8       0x2c src\StepperControlTask.o
-                0x08001dd8                Stepper_Control
- .text.cycle_counter
-                0x08001e04       0x30 src\StepperControlTask.o
-                0x08001e04                cycle_counter
+                0x08001df0       0x2c src\StepperControlTask.o
+                0x08001df0                Stepper_Control
+ .text.pulse_counter
+                0x08001e1c       0x2c src\StepperControlTask.o
+                0x08001e1c                pulse_counter
  .text.vLEDControlStart
-                0x08001e34       0x38 src\LEDControlTask.o
-                0x08001e34                vLEDControlStart
+                0x08001e48       0x38 src\LEDControlTask.o
+                0x08001e48                vLEDControlStart
  .text.prvLEDControlTask
-                0x08001e6c       0x68 src\LEDControlTask.o
+                0x08001e80       0x68 src\LEDControlTask.o
  .text.FreeRTOS_CLIRegisterCommand
-                0x08001ed4       0x84 src\FreeRTOS_CLI.o
-                0x08001ed4                FreeRTOS_CLIRegisterCommand
+                0x08001ee8       0x84 src\FreeRTOS_CLI.o
+                0x08001ee8                FreeRTOS_CLIRegisterCommand
  .text.FreeRTOS_CLIProcessCommand
-                0x08001f58      0x10c src\FreeRTOS_CLI.o
-                0x08001f58                FreeRTOS_CLIProcessCommand
+                0x08001f6c      0x10c src\FreeRTOS_CLI.o
+                0x08001f6c                FreeRTOS_CLIProcessCommand
  .text.FreeRTOS_CLIGetOutputBuffer
-                0x08002064       0x14 src\FreeRTOS_CLI.o
-                0x08002064                FreeRTOS_CLIGetOutputBuffer
+                0x08002078       0x14 src\FreeRTOS_CLI.o
+                0x08002078                FreeRTOS_CLIGetOutputBuffer
  .text.FreeRTOS_CLIGetParameter
-                0x08002078       0xb0 src\FreeRTOS_CLI.o
-                0x08002078                FreeRTOS_CLIGetParameter
+                0x0800208c       0xb0 src\FreeRTOS_CLI.o
+                0x0800208c                FreeRTOS_CLIGetParameter
  .text.prvHelpCommand
-                0x08002128       0x5c src\FreeRTOS_CLI.o
+                0x0800213c       0x5c src\FreeRTOS_CLI.o
  .text.prvGetNumberOfParameters
-                0x08002184       0x64 src\FreeRTOS_CLI.o
+                0x08002198       0x64 src\FreeRTOS_CLI.o
  .text.xTimerCreateTimerTask
-                0x080021e8       0x68 src\FreeRTOS\timers.o
-                0x080021e8                xTimerCreateTimerTask
+                0x080021fc       0x68 src\FreeRTOS\timers.o
+                0x080021fc                xTimerCreateTimerTask
  .text.xTimerGenericCommand
-                0x08002250       0x8c src\FreeRTOS\timers.o
-                0x08002250                xTimerGenericCommand
+                0x08002264       0x8c src\FreeRTOS\timers.o
+                0x08002264                xTimerGenericCommand
  .text.prvProcessExpiredTimer
-                0x080022dc       0x80 src\FreeRTOS\timers.o
+                0x080022f0       0x80 src\FreeRTOS\timers.o
  .text.prvTimerTask
-                0x0800235c       0x24 src\FreeRTOS\timers.o
+                0x08002370       0x24 src\FreeRTOS\timers.o
  .text.prvProcessTimerOrBlockTask
-                0x08002380       0x7c src\FreeRTOS\timers.o
+                0x08002394       0x7c src\FreeRTOS\timers.o
  .text.prvGetNextExpireTime
-                0x080023fc       0x48 src\FreeRTOS\timers.o
+                0x08002410       0x48 src\FreeRTOS\timers.o
  .text.prvSampleTimeNow
-                0x08002444       0x40 src\FreeRTOS\timers.o
+                0x08002458       0x40 src\FreeRTOS\timers.o
  .text.prvInsertTimerInActiveList
-                0x08002484       0x84 src\FreeRTOS\timers.o
+                0x08002498       0x84 src\FreeRTOS\timers.o
  .text.prvProcessReceivedCommands
-                0x08002508      0x12c src\FreeRTOS\timers.o
+                0x0800251c      0x12c src\FreeRTOS\timers.o
  .text.prvSwitchTimerLists
-                0x08002634       0xc0 src\FreeRTOS\timers.o
+                0x08002648       0xc0 src\FreeRTOS\timers.o
  .text.prvCheckForValidListAndQueue
-                0x080026f4       0x8c src\FreeRTOS\timers.o
+                0x08002708       0x8c src\FreeRTOS\timers.o
  .text.xTaskGenericCreate
-                0x08002780      0x1a4 src\FreeRTOS\tasks.o
-                0x08002780                xTaskGenericCreate
+                0x08002794      0x1a4 src\FreeRTOS\tasks.o
+                0x08002794                xTaskGenericCreate
  .text.vTaskDelay
-                0x08002924       0xa4 src\FreeRTOS\tasks.o
-                0x08002924                vTaskDelay
+                0x08002938       0xa4 src\FreeRTOS\tasks.o
+                0x08002938                vTaskDelay
  .text.vTaskStartScheduler
-                0x080029c8       0x94 src\FreeRTOS\tasks.o
-                0x080029c8                vTaskStartScheduler
+                0x080029dc       0x94 src\FreeRTOS\tasks.o
+                0x080029dc                vTaskStartScheduler
  .text.vTaskSuspendAll
-                0x08002a5c       0x1c src\FreeRTOS\tasks.o
-                0x08002a5c                vTaskSuspendAll
+                0x08002a70       0x1c src\FreeRTOS\tasks.o
+                0x08002a70                vTaskSuspendAll
  .text.xTaskResumeAll
-                0x08002a78      0x12c src\FreeRTOS\tasks.o
-                0x08002a78                xTaskResumeAll
+                0x08002a8c      0x12c src\FreeRTOS\tasks.o
+                0x08002a8c                xTaskResumeAll
  .text.xTaskGetTickCount
-                0x08002ba4       0x20 src\FreeRTOS\tasks.o
-                0x08002ba4                xTaskGetTickCount
+                0x08002bb8       0x20 src\FreeRTOS\tasks.o
+                0x08002bb8                xTaskGetTickCount
  .text.uxTaskGetSystemState
-                0x08002bc4       0xe0 src\FreeRTOS\tasks.o
-                0x08002bc4                uxTaskGetSystemState
+                0x08002bd8       0xe0 src\FreeRTOS\tasks.o
+                0x08002bd8                uxTaskGetSystemState
  .text.xTaskIncrementTick
-                0x08002ca4      0x190 src\FreeRTOS\tasks.o
-                0x08002ca4                xTaskIncrementTick
+                0x08002cb8      0x190 src\FreeRTOS\tasks.o
+                0x08002cb8                xTaskIncrementTick
  .text.vTaskSwitchContext
-                0x08002e34      0x138 src\FreeRTOS\tasks.o
-                0x08002e34                vTaskSwitchContext
+                0x08002e48      0x138 src\FreeRTOS\tasks.o
+                0x08002e48                vTaskSwitchContext
  .text.vTaskPlaceOnEventList
-                0x08002f6c       0x80 src\FreeRTOS\tasks.o
-                0x08002f6c                vTaskPlaceOnEventList
+                0x08002f80       0x80 src\FreeRTOS\tasks.o
+                0x08002f80                vTaskPlaceOnEventList
  .text.vTaskPlaceOnEventListRestricted
-                0x08002fec       0x80 src\FreeRTOS\tasks.o
-                0x08002fec                vTaskPlaceOnEventListRestricted
+                0x08003000       0x80 src\FreeRTOS\tasks.o
+                0x08003000                vTaskPlaceOnEventListRestricted
  .text.xTaskRemoveFromEventList
-                0x0800306c       0xc8 src\FreeRTOS\tasks.o
-                0x0800306c                xTaskRemoveFromEventList
+                0x08003080       0xc8 src\FreeRTOS\tasks.o
+                0x08003080                xTaskRemoveFromEventList
  .text.vTaskSetTimeOutState
-                0x08003134       0x44 src\FreeRTOS\tasks.o
-                0x08003134                vTaskSetTimeOutState
+                0x08003148       0x44 src\FreeRTOS\tasks.o
+                0x08003148                vTaskSetTimeOutState
  .text.xTaskCheckForTimeOut
-                0x08003178       0xac src\FreeRTOS\tasks.o
-                0x08003178                xTaskCheckForTimeOut
+                0x0800318c       0xac src\FreeRTOS\tasks.o
+                0x0800318c                xTaskCheckForTimeOut
  .text.vTaskMissedYield
-                0x08003224       0x18 src\FreeRTOS\tasks.o
-                0x08003224                vTaskMissedYield
+                0x08003238       0x18 src\FreeRTOS\tasks.o
+                0x08003238                vTaskMissedYield
  .text.prvIdleTask
-                0x0800323c       0x34 src\FreeRTOS\tasks.o
+                0x08003250       0x34 src\FreeRTOS\tasks.o
  .text.prvInitialiseTCBVariables
-                0x08003270       0xac src\FreeRTOS\tasks.o
+                0x08003284       0xac src\FreeRTOS\tasks.o
  .text.prvInitialiseTaskLists
-                0x0800331c       0x74 src\FreeRTOS\tasks.o
+                0x08003330       0x74 src\FreeRTOS\tasks.o
  .text.prvCheckTasksWaitingTermination
-                0x08003390       0x74 src\FreeRTOS\tasks.o
+                0x080033a4       0x74 src\FreeRTOS\tasks.o
  .text.prvAddCurrentTaskToDelayedList
-                0x08003404       0x6c src\FreeRTOS\tasks.o
+                0x08003418       0x6c src\FreeRTOS\tasks.o
  .text.prvAllocateTCBAndStack
-                0x08003470       0x70 src\FreeRTOS\tasks.o
+                0x08003484       0x70 src\FreeRTOS\tasks.o
  .text.prvListTaskWithinSingleList
-                0x080034e0      0x100 src\FreeRTOS\tasks.o
+                0x080034f4      0x100 src\FreeRTOS\tasks.o
  .text.prvTaskCheckFreeStackSpace
-                0x080035e0       0x38 src\FreeRTOS\tasks.o
+                0x080035f4       0x38 src\FreeRTOS\tasks.o
  .text.prvDeleteTCB
-                0x08003618       0x20 src\FreeRTOS\tasks.o
+                0x0800362c       0x20 src\FreeRTOS\tasks.o
  .text.prvResetNextTaskUnblockTime
-                0x08003638       0x48 src\FreeRTOS\tasks.o
+                0x0800364c       0x48 src\FreeRTOS\tasks.o
  .text.xTaskGetSchedulerState
-                0x08003680       0x3c src\FreeRTOS\tasks.o
-                0x08003680                xTaskGetSchedulerState
+                0x08003694       0x3c src\FreeRTOS\tasks.o
+                0x08003694                xTaskGetSchedulerState
  .text.vTaskPriorityInherit
-                0x080036bc       0xf0 src\FreeRTOS\tasks.o
-                0x080036bc                vTaskPriorityInherit
+                0x080036d0       0xf0 src\FreeRTOS\tasks.o
+                0x080036d0                vTaskPriorityInherit
  .text.xTaskPriorityDisinherit
-                0x080037ac       0xe8 src\FreeRTOS\tasks.o
-                0x080037ac                xTaskPriorityDisinherit
+                0x080037c0       0xe8 src\FreeRTOS\tasks.o
+                0x080037c0                xTaskPriorityDisinherit
  .text.prvWriteNameToBuffer
-                0x08003894       0x4c src\FreeRTOS\tasks.o
+                0x080038a8       0x4c src\FreeRTOS\tasks.o
  .text.vTaskList
-                0x080038e0       0xf8 src\FreeRTOS\tasks.o
-                0x080038e0                vTaskList
+                0x080038f4       0xf8 src\FreeRTOS\tasks.o
+                0x080038f4                vTaskList
  .text.vTaskGetRunTimeStats
-                0x080039d8       0xe4 src\FreeRTOS\tasks.o
-                0x080039d8                vTaskGetRunTimeStats
+                0x080039ec       0xe4 src\FreeRTOS\tasks.o
+                0x080039ec                vTaskGetRunTimeStats
  .text.pvTaskIncrementMutexHeldCount
-                0x08003abc       0x28 src\FreeRTOS\tasks.o
-                0x08003abc                pvTaskIncrementMutexHeldCount
+                0x08003ad0       0x28 src\FreeRTOS\tasks.o
+                0x08003ad0                pvTaskIncrementMutexHeldCount
  .text.xQueueGenericReset
-                0x08003ae4       0xd0 src\FreeRTOS\queue.o
-                0x08003ae4                xQueueGenericReset
+                0x08003af8       0xd0 src\FreeRTOS\queue.o
+                0x08003af8                xQueueGenericReset
  .text.xQueueGenericCreate
-                0x08003bb4       0xb8 src\FreeRTOS\queue.o
-                0x08003bb4                xQueueGenericCreate
+                0x08003bc8       0xb8 src\FreeRTOS\queue.o
+                0x08003bc8                xQueueGenericCreate
  .text.xQueueCreateMutex
-                0x08003c6c       0xa0 src\FreeRTOS\queue.o
-                0x08003c6c                xQueueCreateMutex
+                0x08003c80       0xa0 src\FreeRTOS\queue.o
+                0x08003c80                xQueueCreateMutex
  .text.xQueueGenericSend
-                0x08003d0c      0x1ec src\FreeRTOS\queue.o
-                0x08003d0c                xQueueGenericSend
+                0x08003d20      0x1ec src\FreeRTOS\queue.o
+                0x08003d20                xQueueGenericSend
  .text.xQueueGenericSendFromISR
-                0x08003ef8      0x118 src\FreeRTOS\queue.o
-                0x08003ef8                xQueueGenericSendFromISR
+                0x08003f0c      0x118 src\FreeRTOS\queue.o
+                0x08003f0c                xQueueGenericSendFromISR
  .text.xQueueGenericReceive
-                0x08004010      0x20c src\FreeRTOS\queue.o
-                0x08004010                xQueueGenericReceive
+                0x08004024      0x20c src\FreeRTOS\queue.o
+                0x08004024                xQueueGenericReceive
  .text.xQueueReceiveFromISR
-                0x0800421c       0xe8 src\FreeRTOS\queue.o
-                0x0800421c                xQueueReceiveFromISR
+                0x08004230       0xe8 src\FreeRTOS\queue.o
+                0x08004230                xQueueReceiveFromISR
  .text.prvCopyDataToQueue
-                0x08004304       0xdc src\FreeRTOS\queue.o
+                0x08004318       0xdc src\FreeRTOS\queue.o
  .text.prvCopyDataFromQueue
-                0x080043e0       0x4c src\FreeRTOS\queue.o
+                0x080043f4       0x4c src\FreeRTOS\queue.o
  .text.prvUnlockQueue
-                0x0800442c       0x98 src\FreeRTOS\queue.o
+                0x08004440       0x98 src\FreeRTOS\queue.o
  .text.prvIsQueueEmpty
-                0x080044c4       0x2c src\FreeRTOS\queue.o
+                0x080044d8       0x2c src\FreeRTOS\queue.o
  .text.prvIsQueueFull
-                0x080044f0       0x30 src\FreeRTOS\queue.o
+                0x08004504       0x30 src\FreeRTOS\queue.o
  .text.vQueueAddToRegistry
-                0x08004520       0x50 src\FreeRTOS\queue.o
-                0x08004520                vQueueAddToRegistry
+                0x08004534       0x50 src\FreeRTOS\queue.o
+                0x08004534                vQueueAddToRegistry
  .text.vQueueWaitForMessageRestricted
-                0x08004570       0x58 src\FreeRTOS\queue.o
-                0x08004570                vQueueWaitForMessageRestricted
+                0x08004584       0x58 src\FreeRTOS\queue.o
+                0x08004584                vQueueWaitForMessageRestricted
  .text.pvPortMalloc
-                0x080045c8       0x30 src\FreeRTOS\portable\MemMang\heap_3.o
-                0x080045c8                pvPortMalloc
+                0x080045dc       0x30 src\FreeRTOS\portable\MemMang\heap_3.o
+                0x080045dc                pvPortMalloc
  .text.vPortFree
-                0x080045f8       0x24 src\FreeRTOS\portable\MemMang\heap_3.o
-                0x080045f8                vPortFree
+                0x0800460c       0x24 src\FreeRTOS\portable\MemMang\heap_3.o
+                0x0800460c                vPortFree
  .text.pxPortInitialiseStack
-                0x0800461c       0x64 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x0800461c                pxPortInitialiseStack
+                0x08004630       0x64 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08004630                pxPortInitialiseStack
  .text.prvTaskExitError
-                0x08004680       0x3c src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08004694       0x3c src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
  .text.SVC_Handler
-                0x080046bc       0x20 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x080046bc                SVC_Handler
+                0x080046d0       0x20 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x080046d0                SVC_Handler
  .text.prvPortStartFirstTask
-                0x080046dc       0x20 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x080046f0       0x20 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
  .text.xPortStartScheduler
-                0x080046fc       0xd0 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x080046fc                xPortStartScheduler
+                0x08004710       0xd0 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08004710                xPortStartScheduler
  .text.vPortEnterCritical
-                0x080047cc       0x5c src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x080047cc                vPortEnterCritical
+                0x080047e0       0x5c src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x080047e0                vPortEnterCritical
  .text.vPortExitCritical
-                0x08004828       0x4c src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x08004828                vPortExitCritical
+                0x0800483c       0x4c src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x0800483c                vPortExitCritical
  .text.PendSV_Handler
-                0x08004874       0x60 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x08004874                PendSV_Handler
+                0x08004888       0x60 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08004888                PendSV_Handler
  .text.SysTick_Handler
-                0x080048d4       0x44 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x080048d4                SysTick_Handler
+                0x080048e8       0x44 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x080048e8                SysTick_Handler
  .text.vPortSetupTimerInterrupt
-                0x08004918       0x34 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x08004918                vPortSetupTimerInterrupt
+                0x0800492c       0x34 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x0800492c                vPortSetupTimerInterrupt
  .text.vPortEnableVFP
-                0x0800494c       0x14 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08004960       0x14 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
  .text.vPortValidateInterruptPriority
-                0x08004960       0x78 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
-                0x08004960                vPortValidateInterruptPriority
+                0x08004974       0x78 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x08004974                vPortValidateInterruptPriority
  .text.vListInitialise
-                0x080049d8       0x40 src\FreeRTOS\list.o
-                0x080049d8                vListInitialise
+                0x080049ec       0x40 src\FreeRTOS\list.o
+                0x080049ec                vListInitialise
  .text.vListInitialiseItem
-                0x08004a18       0x18 src\FreeRTOS\list.o
-                0x08004a18                vListInitialiseItem
+                0x08004a2c       0x18 src\FreeRTOS\list.o
+                0x08004a2c                vListInitialiseItem
  .text.vListInsertEnd
-                0x08004a30       0x48 src\FreeRTOS\list.o
-                0x08004a30                vListInsertEnd
+                0x08004a44       0x48 src\FreeRTOS\list.o
+                0x08004a44                vListInsertEnd
  .text.vListInsert
-                0x08004a78       0x70 src\FreeRTOS\list.o
-                0x08004a78                vListInsert
+                0x08004a8c       0x70 src\FreeRTOS\list.o
+                0x08004a8c                vListInsert
  .text.uxListRemove
-                0x08004ae8       0x54 src\FreeRTOS\list.o
-                0x08004ae8                uxListRemove
+                0x08004afc       0x54 src\FreeRTOS\list.o
+                0x08004afc                uxListRemove
  .text.vRegisterCLICommands
-                0x08004b3c       0x38 src\CLI-commands.o
-                0x08004b3c                vRegisterCLICommands
+                0x08004b50       0x38 src\CLI-commands.o
+                0x08004b50                vRegisterCLICommands
  .text.prvStepperControlCommand
-                0x08004b74      0x108 src\CLI-commands.o
+                0x08004b88      0x12c src\CLI-commands.o
  .text.prvTaskStatsCommand
-                0x08004c7c       0x94 src\CLI-commands.o
+                0x08004cb4       0x94 src\CLI-commands.o
  .text.prvRunTimeStatsCommand
-                0x08004d10       0x94 src\CLI-commands.o
+                0x08004d48       0x94 src\CLI-commands.o
  .text.prvThreeParameterEchoCommand
-                0x08004da4      0x100 src\CLI-commands.o
+                0x08004ddc      0x100 src\CLI-commands.o
  .text.prvParameterEchoCommand
-                0x08004ea4       0xec src\CLI-commands.o
+                0x08004edc       0xec src\CLI-commands.o
  .text.STM_EVAL_LEDToggle
-                0x08004f90       0x3c Utilities\stm32f4_discovery.o
-                0x08004f90                STM_EVAL_LEDToggle
+                0x08004fc8       0x3c Utilities\stm32f4_discovery.o
+                0x08004fc8                STM_EVAL_LEDToggle
  .text.STM_EVAL_PBInit
-                0x08004fcc       0x94 Utilities\stm32f4_discovery.o
-                0x08004fcc                STM_EVAL_PBInit
+                0x08005004       0x94 Utilities\stm32f4_discovery.o
+                0x08005004                STM_EVAL_PBInit
  .text.USART_Init
-                0x08005060      0x178 StdPeriph_Driver\src\stm32f4xx_usart.o
-                0x08005060                USART_Init
+                0x08005098      0x178 StdPeriph_Driver\src\stm32f4xx_usart.o
+                0x08005098                USART_Init
  .text.USART_Cmd
-                0x080051d8       0x40 StdPeriph_Driver\src\stm32f4xx_usart.o
-                0x080051d8                USART_Cmd
+                0x08005210       0x40 StdPeriph_Driver\src\stm32f4xx_usart.o
+                0x08005210                USART_Cmd
  .text.USART_SendData
-                0x08005218       0x24 StdPeriph_Driver\src\stm32f4xx_usart.o
-                0x08005218                USART_SendData
+                0x08005250       0x24 StdPeriph_Driver\src\stm32f4xx_usart.o
+                0x08005250                USART_SendData
  .text.USART_ReceiveData
-                0x0800523c       0x20 StdPeriph_Driver\src\stm32f4xx_usart.o
-                0x0800523c                USART_ReceiveData
+                0x08005274       0x20 StdPeriph_Driver\src\stm32f4xx_usart.o
+                0x08005274                USART_ReceiveData
  .text.USART_ITConfig
-                0x0800525c       0x90 StdPeriph_Driver\src\stm32f4xx_usart.o
-                0x0800525c                USART_ITConfig
+                0x08005294       0x90 StdPeriph_Driver\src\stm32f4xx_usart.o
+                0x08005294                USART_ITConfig
  .text.USART_GetITStatus
-                0x080052ec       0xb8 StdPeriph_Driver\src\stm32f4xx_usart.o
-                0x080052ec                USART_GetITStatus
+                0x08005324       0xb8 StdPeriph_Driver\src\stm32f4xx_usart.o
+                0x08005324                USART_GetITStatus
  .text.TIM_TimeBaseInit
-                0x080053a4       0xd4 StdPeriph_Driver\src\stm32f4xx_tim.o
-                0x080053a4                TIM_TimeBaseInit
+                0x080053dc       0xd4 StdPeriph_Driver\src\stm32f4xx_tim.o
+                0x080053dc                TIM_TimeBaseInit
  .text.TIM_ARRPreloadConfig
-                0x08005478       0x40 StdPeriph_Driver\src\stm32f4xx_tim.o
-                0x08005478                TIM_ARRPreloadConfig
- .text.TIM_Cmd  0x080054b8       0x40 StdPeriph_Driver\src\stm32f4xx_tim.o
-                0x080054b8                TIM_Cmd
+                0x080054b0       0x40 StdPeriph_Driver\src\stm32f4xx_tim.o
+                0x080054b0                TIM_ARRPreloadConfig
+ .text.TIM_Cmd  0x080054f0       0x40 StdPeriph_Driver\src\stm32f4xx_tim.o
+                0x080054f0                TIM_Cmd
  .text.TIM_OC1Init
-                0x080054f8       0xf4 StdPeriph_Driver\src\stm32f4xx_tim.o
-                0x080054f8                TIM_OC1Init
+                0x08005530       0xf4 StdPeriph_Driver\src\stm32f4xx_tim.o
+                0x08005530                TIM_OC1Init
  .text.TIM_OC1PreloadConfig
-                0x080055ec       0x38 StdPeriph_Driver\src\stm32f4xx_tim.o
-                0x080055ec                TIM_OC1PreloadConfig
+                0x08005624       0x38 StdPeriph_Driver\src\stm32f4xx_tim.o
+                0x08005624                TIM_OC1PreloadConfig
  .text.TIM_ITConfig
-                0x08005624       0x48 StdPeriph_Driver\src\stm32f4xx_tim.o
-                0x08005624                TIM_ITConfig
+                0x0800565c       0x48 StdPeriph_Driver\src\stm32f4xx_tim.o
+                0x0800565c                TIM_ITConfig
  .text.TIM_GetITStatus
-                0x0800566c       0x54 StdPeriph_Driver\src\stm32f4xx_tim.o
-                0x0800566c                TIM_GetITStatus
+                0x080056a4       0x54 StdPeriph_Driver\src\stm32f4xx_tim.o
+                0x080056a4                TIM_GetITStatus
  .text.TIM_ClearITPendingBit
-                0x080056c0       0x20 StdPeriph_Driver\src\stm32f4xx_tim.o
-                0x080056c0                TIM_ClearITPendingBit
+                0x080056f8       0x20 StdPeriph_Driver\src\stm32f4xx_tim.o
+                0x080056f8                TIM_ClearITPendingBit
  .text.SYSCFG_EXTILineConfig
-                0x080056e0       0x84 StdPeriph_Driver\src\stm32f4xx_syscfg.o
-                0x080056e0                SYSCFG_EXTILineConfig
+                0x08005718       0x84 StdPeriph_Driver\src\stm32f4xx_syscfg.o
+                0x08005718                SYSCFG_EXTILineConfig
  .text.RCC_GetClocksFreq
-                0x08005764      0x154 StdPeriph_Driver\src\stm32f4xx_rcc.o
-                0x08005764                RCC_GetClocksFreq
+                0x0800579c      0x154 StdPeriph_Driver\src\stm32f4xx_rcc.o
+                0x0800579c                RCC_GetClocksFreq
  .text.RCC_AHB1PeriphClockCmd
-                0x080058b8       0x3c StdPeriph_Driver\src\stm32f4xx_rcc.o
-                0x080058b8                RCC_AHB1PeriphClockCmd
+                0x080058f0       0x3c StdPeriph_Driver\src\stm32f4xx_rcc.o
+                0x080058f0                RCC_AHB1PeriphClockCmd
  .text.RCC_APB1PeriphClockCmd
-                0x080058f4       0x3c StdPeriph_Driver\src\stm32f4xx_rcc.o
-                0x080058f4                RCC_APB1PeriphClockCmd
+                0x0800592c       0x3c StdPeriph_Driver\src\stm32f4xx_rcc.o
+                0x0800592c                RCC_APB1PeriphClockCmd
  .text.RCC_APB2PeriphClockCmd
-                0x08005930       0x3c StdPeriph_Driver\src\stm32f4xx_rcc.o
-                0x08005930                RCC_APB2PeriphClockCmd
+                0x08005968       0x3c StdPeriph_Driver\src\stm32f4xx_rcc.o
+                0x08005968                RCC_APB2PeriphClockCmd
  .text.GPIO_Init
-                0x0800596c      0x11c StdPeriph_Driver\src\stm32f4xx_gpio.o
-                0x0800596c                GPIO_Init
+                0x080059a4      0x11c StdPeriph_Driver\src\stm32f4xx_gpio.o
+                0x080059a4                GPIO_Init
  .text.GPIO_SetBits
-                0x08005a88       0x1c StdPeriph_Driver\src\stm32f4xx_gpio.o
-                0x08005a88                GPIO_SetBits
+                0x08005ac0       0x1c StdPeriph_Driver\src\stm32f4xx_gpio.o
+                0x08005ac0                GPIO_SetBits
  .text.GPIO_ResetBits
-                0x08005aa4       0x1c StdPeriph_Driver\src\stm32f4xx_gpio.o
-                0x08005aa4                GPIO_ResetBits
+                0x08005adc       0x1c StdPeriph_Driver\src\stm32f4xx_gpio.o
+                0x08005adc                GPIO_ResetBits
  .text.GPIO_PinAFConfig
-                0x08005ac0       0x90 StdPeriph_Driver\src\stm32f4xx_gpio.o
-                0x08005ac0                GPIO_PinAFConfig
+                0x08005af8       0x90 StdPeriph_Driver\src\stm32f4xx_gpio.o
+                0x08005af8                GPIO_PinAFConfig
  .text.EXTI_Init
-                0x08005b50       0xe4 StdPeriph_Driver\src\stm32f4xx_exti.o
-                0x08005b50                EXTI_Init
+                0x08005b88       0xe4 StdPeriph_Driver\src\stm32f4xx_exti.o
+                0x08005b88                EXTI_Init
  .text.NVIC_PriorityGroupConfig
-                0x08005c34       0x24 StdPeriph_Driver\src\misc.o
-                0x08005c34                NVIC_PriorityGroupConfig
+                0x08005c6c       0x24 StdPeriph_Driver\src\misc.o
+                0x08005c6c                NVIC_PriorityGroupConfig
  .text.NVIC_Init
-                0x08005c58       0xc0 StdPeriph_Driver\src\misc.o
-                0x08005c58                NVIC_Init
+                0x08005c90       0xc0 StdPeriph_Driver\src\misc.o
+                0x08005c90                NVIC_Init
  .text.NVIC_SetVectorTable
-                0x08005d18       0x2c StdPeriph_Driver\src\misc.o
-                0x08005d18                NVIC_SetVectorTable
+                0x08005d50       0x2c StdPeriph_Driver\src\misc.o
+                0x08005d50                NVIC_SetVectorTable
  .text.SysTick_CLKSourceConfig
-                0x08005d44       0x38 StdPeriph_Driver\src\misc.o
-                0x08005d44                SysTick_CLKSourceConfig
- .text.atoi     0x08005d7c        0x8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-atoi.o)
-                0x08005d7c                atoi
- .text.__errno  0x08005d84        0xc c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-errno.o)
-                0x08005d84                __errno
+                0x08005d7c       0x38 StdPeriph_Driver\src\misc.o
+                0x08005d7c                SysTick_CLKSourceConfig
+ .text.atoi     0x08005db4        0x8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-atoi.o)
+                0x08005db4                atoi
+ .text.__errno  0x08005dbc        0xc c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-errno.o)
+                0x08005dbc                __errno
  .text.__libc_init_array
-                0x08005d90       0x50 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-init.o)
-                0x08005d90                __libc_init_array
- .text.malloc   0x08005de0       0x10 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-malloc.o)
-                0x08005de0                malloc
- .text.free     0x08005df0       0x10 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-malloc.o)
-                0x08005df0                free
+                0x08005dc8       0x50 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-init.o)
+                0x08005dc8                __libc_init_array
+ .text.malloc   0x08005e18       0x10 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-malloc.o)
+                0x08005e18                malloc
+ .text.free     0x08005e28       0x10 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-malloc.o)
+                0x08005e28                free
  .text._malloc_r
-                0x08005e00      0x524 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mallocr.o)
-                0x08005e00                _malloc_r
- .text.memcmp   0x08006324       0x64 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memcmp.o)
-                0x08006324                memcmp
- .text.memset   0x08006388       0x9c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memset.o)
-                0x08006388                memset
+                0x08005e38      0x524 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mallocr.o)
+                0x08005e38                _malloc_r
+ .text.memcmp   0x0800635c       0x64 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memcmp.o)
+                0x0800635c                memcmp
+ .text.memset   0x080063c0       0x9c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memset.o)
+                0x080063c0                memset
  .text.__malloc_lock
-                0x08006424        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mlock.o)
-                0x08006424                __malloc_lock
+                0x0800645c        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mlock.o)
+                0x0800645c                __malloc_lock
  .text.__malloc_unlock
-                0x08006428        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mlock.o)
-                0x08006428                __malloc_unlock
- .text._sbrk_r  0x0800642c       0x24 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-sbrkr.o)
-                0x0800642c                _sbrk_r
- .text.sprintf  0x08006450       0x4c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-sprintf.o)
-                0x08006450                sprintf
- .text.strcpy   0x0800649c       0xbc c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strcpy.o)
-                0x0800649c                strcpy
- .text.strlen   0x08006558       0x5c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strlen.o)
-                0x08006558                strlen
- .text.strncat  0x080065b4       0x5c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strncat.o)
-                0x080065b4                strncat
- .text.strncmp  0x08006610       0x98 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strncmp.o)
-                0x08006610                strncmp
- .text.strncpy  0x080066a8       0x68 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strncpy.o)
-                0x080066a8                strncpy
+                0x08006460        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mlock.o)
+                0x08006460                __malloc_unlock
+ .text._sbrk_r  0x08006464       0x24 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-sbrkr.o)
+                0x08006464                _sbrk_r
+ .text.sprintf  0x08006488       0x4c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-sprintf.o)
+                0x08006488                sprintf
+ .text.strcpy   0x080064d4       0xbc c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strcpy.o)
+                0x080064d4                strcpy
+ .text.strlen   0x08006590       0x5c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strlen.o)
+                0x08006590                strlen
+ .text.strncat  0x080065ec       0x5c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strncat.o)
+                0x080065ec                strncat
+ .text.strncmp  0x08006648       0x98 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strncmp.o)
+                0x08006648                strncmp
+ .text.strncpy  0x080066e0       0x68 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strncpy.o)
+                0x080066e0                strncpy
  .text._strtol_r
-                0x08006710      0x11c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strtol.o)
-                0x08006710                _strtol_r
- .text.strtol   0x0800682c       0x18 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strtol.o)
-                0x0800682c                strtol
- *fill*         0x08006844        0x4 
+                0x08006748      0x11c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strtol.o)
+                0x08006748                _strtol_r
+ .text.strtol   0x08006864       0x18 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strtol.o)
+                0x08006864                strtol
+ *fill*         0x0800687c        0x4 
  .text._svfprintf_r
-                0x08006848     0x14d0 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-svfprintf.o)
-                0x08006848                _svfprintf_r
+                0x08006880     0x14d0 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-svfprintf.o)
+                0x08006880                _svfprintf_r
  .text.startup.register_fini
-                0x08007d18       0x14 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__call_atexit.o)
- .text.atexit   0x08007d2c        0xc c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-atexit.o)
-                0x08007d2c                atexit
- .text.quorem   0x08007d38      0x12c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-dtoa.o)
- *fill*         0x08007e64        0x4 
- .text._dtoa_r  0x08007e68      0xea8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-dtoa.o)
-                0x08007e68                _dtoa_r
+                0x08007d50       0x14 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__call_atexit.o)
+ .text.atexit   0x08007d64        0xc c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-atexit.o)
+                0x08007d64                atexit
+ .text.quorem   0x08007d70      0x12c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-dtoa.o)
+ *fill*         0x08007e9c        0x4 
+ .text._dtoa_r  0x08007ea0      0xea8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-dtoa.o)
+                0x08007ea0                _dtoa_r
  .text.__libc_fini_array
-                0x08008d10       0x2c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-fini.o)
-                0x08008d10                __libc_fini_array
+                0x08008d48       0x2c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-fini.o)
+                0x08008d48                __libc_fini_array
  .text._malloc_trim_r
-                0x08008d3c       0x9c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-freer.o)
-                0x08008d3c                _malloc_trim_r
- .text._free_r  0x08008dd8      0x1b0 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-freer.o)
-                0x08008dd8                _free_r
+                0x08008d74       0x9c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-freer.o)
+                0x08008d74                _malloc_trim_r
+ .text._free_r  0x08008e10      0x1b0 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-freer.o)
+                0x08008e10                _free_r
  .text._localeconv_r
-                0x08008f88        0x8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-locale.o)
-                0x08008f88                _localeconv_r
- .text.memchr   0x08008f90       0x94 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memchr.o)
-                0x08008f90                memchr
- .text._Balloc  0x08009024       0x4c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
-                0x08009024                _Balloc
- .text._Bfree   0x08009070       0x14 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
-                0x08009070                _Bfree
+                0x08008fc0        0x8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-locale.o)
+                0x08008fc0                _localeconv_r
+ .text.memchr   0x08008fc8       0x94 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memchr.o)
+                0x08008fc8                memchr
+ .text._Balloc  0x0800905c       0x4c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+                0x0800905c                _Balloc
+ .text._Bfree   0x080090a8       0x14 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+                0x080090a8                _Bfree
  .text.__multadd
-                0x08009084       0x84 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
-                0x08009084                __multadd
+                0x080090bc       0x84 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+                0x080090bc                __multadd
  .text.__hi0bits
-                0x08009108       0x40 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
-                0x08009108                __hi0bits
+                0x08009140       0x40 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+                0x08009140                __hi0bits
  .text.__lo0bits
-                0x08009148       0x5c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
-                0x08009148                __lo0bits
- .text.__i2b    0x080091a4       0x14 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
-                0x080091a4                __i2b
+                0x08009180       0x5c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+                0x08009180                __lo0bits
+ .text.__i2b    0x080091dc       0x14 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+                0x080091dc                __i2b
  .text.__multiply
-                0x080091b8      0x134 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
-                0x080091b8                __multiply
+                0x080091f0      0x134 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+                0x080091f0                __multiply
  .text.__pow5mult
-                0x080092ec       0xa0 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
-                0x080092ec                __pow5mult
+                0x08009324       0xa0 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+                0x08009324                __pow5mult
  .text.__lshift
-                0x0800938c       0xac c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
-                0x0800938c                __lshift
- .text.__mcmp   0x08009438       0x48 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
-                0x08009438                __mcmp
- .text.__mdiff  0x08009480       0xd4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
-                0x08009480                __mdiff
- .text.__d2b    0x08009554       0xbc c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
-                0x08009554                __d2b
+                0x080093c4       0xac c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+                0x080093c4                __lshift
+ .text.__mcmp   0x08009470       0x48 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+                0x08009470                __mcmp
+ .text.__mdiff  0x080094b8       0xd4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+                0x080094b8                __mdiff
+ .text.__d2b    0x0800958c       0xbc c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+                0x0800958c                __d2b
  .text.__fpclassifyd
-                0x08009610       0x5c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-s_fpclassify.o)
-                0x08009610                __fpclassifyd
+                0x08009648       0x5c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-s_fpclassify.o)
+                0x08009648                __fpclassifyd
  .text.__ssprint_r
-                0x0800966c      0x104 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-svfiprintf.o)
-                0x0800966c                __ssprint_r
+                0x080096a4      0x104 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-svfiprintf.o)
+                0x080096a4                __ssprint_r
  .text.__register_exitproc
-                0x08009770       0xa4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__atexit.o)
-                0x08009770                __register_exitproc
+                0x080097a8       0xa4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__atexit.o)
+                0x080097a8                __register_exitproc
  .text._calloc_r
-                0x08009814       0x60 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-callocr.o)
-                0x08009814                _calloc_r
- .text.memmove  0x08009874       0xc8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memmove.o)
-                0x08009874                memmove
+                0x0800984c       0x60 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-callocr.o)
+                0x0800984c                _calloc_r
+ .text.memmove  0x080098ac       0xc8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memmove.o)
+                0x080098ac                memmove
  .text._realloc_r
-                0x0800993c      0x3ec c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-reallocr.o)
-                0x0800993c                _realloc_r
+                0x08009974      0x3ec c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-reallocr.o)
+                0x08009974                _realloc_r
  *(.rodata)
- .rodata        0x08009d28       0xa0 src\UARTCommandConsoleTask.o
- .rodata        0x08009dc8       0x74 src\StepperControlTask.o
- .rodata        0x08009e3c       0x10 src\LEDControlTask.o
- .rodata        0x08009e4c       0xf0 src\FreeRTOS_CLI.o
- .rodata        0x08009f3c       0x10 src\FreeRTOS\timers.o
- .rodata        0x08009f4c       0x44 src\FreeRTOS\tasks.o
- .rodata        0x08009f90      0x378 src\CLI-commands.o
- .rodata        0x0800a308       0x30 Utilities\stm32f4_discovery.o
-                0x0800a308                GPIO_PIN
-                0x0800a310                GPIO_CLK
-                0x0800a320                BUTTON_PIN
-                0x0800a324                BUTTON_CLK
-                0x0800a328                BUTTON_EXTI_LINE
-                0x0800a32c                BUTTON_PORT_SOURCE
-                0x0800a330                BUTTON_PIN_SOURCE
-                0x0800a334                BUTTON_IRQn
+ .rodata        0x08009d60       0xa0 src\UARTCommandConsoleTask.o
+ .rodata        0x08009e00       0xfc src\StepperControlTask.o
+ .rodata        0x08009efc       0x10 src\LEDControlTask.o
+ .rodata        0x08009f0c       0xf0 src\FreeRTOS_CLI.o
+ .rodata        0x08009ffc       0x10 src\FreeRTOS\timers.o
+ .rodata        0x0800a00c       0x44 src\FreeRTOS\tasks.o
+ .rodata        0x0800a050      0x3b0 src\CLI-commands.o
+ .rodata        0x0800a400       0x30 Utilities\stm32f4_discovery.o
+                0x0800a400                GPIO_PIN
+                0x0800a408                GPIO_CLK
+                0x0800a418                BUTTON_PIN
+                0x0800a41c                BUTTON_CLK
+                0x0800a420                BUTTON_EXTI_LINE
+                0x0800a424                BUTTON_PORT_SOURCE
+                0x0800a428                BUTTON_PIN_SOURCE
+                0x0800a42c                BUTTON_IRQn
  *(.rodata*)
  .rodata.str1.4
-                0x0800a338        0x2 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-impure.o)
+                0x0800a430        0x2 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-impure.o)
                                   0x4 (size before relaxing)
- *fill*         0x0800a33a        0x2 
+ *fill*         0x0800a432        0x2 
  .rodata._global_impure_ptr
-                0x0800a33c        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-impure.o)
-                0x0800a33c                _global_impure_ptr
+                0x0800a434        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-impure.o)
+                0x0800a434                _global_impure_ptr
  .rodata.zeroes.6916
-                0x0800a340       0x10 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-svfprintf.o)
+                0x0800a438       0x10 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-svfprintf.o)
  .rodata.str1.4
-                0x0800a350       0x42 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-svfprintf.o)
+                0x0800a448       0x42 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-svfprintf.o)
                                  0x44 (size before relaxing)
- *fill*         0x0800a392        0x2 
+ *fill*         0x0800a48a        0x2 
  .rodata.blanks.6915
-                0x0800a394       0x10 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-svfprintf.o)
+                0x0800a48c       0x10 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-svfprintf.o)
  .rodata._ctype_
-                0x0800a3a4      0x104 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-ctype_.o)
-                0x0800a3a4                _ctype_
+                0x0800a49c      0x104 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-ctype_.o)
+                0x0800a49c                _ctype_
  .rodata.str1.4
-                0x0800a4a8       0x10 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-dtoa.o)
+                0x0800a5a0       0x10 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-dtoa.o)
                                  0x14 (size before relaxing)
  .rodata.str1.4
-                0x0800a4b8        0xc c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-locale.o)
+                0x0800a5b0        0xc c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-locale.o)
                                  0x14 (size before relaxing)
  .rodata.p05.5296
-                0x0800a4c4        0xc c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+                0x0800a5bc        0xc c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
  .rodata.__mprec_tens
-                0x0800a4d0       0xc8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
-                0x0800a4d0                __mprec_tens
+                0x0800a5c8       0xc8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+                0x0800a5c8                __mprec_tens
  .rodata.__mprec_bigtens
-                0x0800a598       0x28 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
-                0x0800a598                __mprec_bigtens
+                0x0800a690       0x28 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+                0x0800a690                __mprec_bigtens
  *(.glue_7)
  .glue_7        0x00000000        0x0 linker stubs
  *(.glue_7t)
  .glue_7t       0x00000000        0x0 linker stubs
  *(.eh_frame)
- .eh_frame      0x0800a5c0        0x0 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtbegin.o
+ .eh_frame      0x0800a6b8        0x0 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtbegin.o
  *(.init)
- .init          0x0800a5c0        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crti.o
-                0x0800a5c0                _init
- .init          0x0800a5c4        0x8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtn.o
+ .init          0x0800a6b8        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crti.o
+                0x0800a6b8                _init
+ .init          0x0800a6bc        0x8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtn.o
  *(.fini)
- .fini          0x0800a5cc        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crti.o
-                0x0800a5cc                _fini
- .fini          0x0800a5d0        0x8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtn.o
-                0x0800a5d8                . = ALIGN (0x4)
-                0x0800a5d8                _etext = .
+ .fini          0x0800a6c4        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crti.o
+                0x0800a6c4                _fini
+ .fini          0x0800a6c8        0x8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtn.o
+                0x0800a6d0                . = ALIGN (0x4)
+                0x0800a6d0                _etext = .
 
-.vfp11_veneer   0x0800a5d8        0x0
+.vfp11_veneer   0x0800a6d0        0x0
  .vfp11_veneer  0x00000000        0x0 linker stubs
 
-.v4_bx          0x0800a5d8        0x0
+.v4_bx          0x0800a6d0        0x0
  .v4_bx         0x00000000        0x0 linker stubs
 
-.iplt           0x0800a5d8        0x0
+.iplt           0x0800a6d0        0x0
  .iplt          0x00000000        0x0 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtbegin.o
 
 .ARM.extab
  *(.ARM.extab* .gnu.linkonce.armextab.*)
 
-.ARM            0x0800a5d8        0x8
-                0x0800a5d8                __exidx_start = .
+.ARM            0x0800a6d0        0x8
+                0x0800a6d0                __exidx_start = .
  *(.ARM.exidx*)
- .ARM.exidx     0x0800a5d8        0x8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu\libgcc.a(_divdi3.o)
- .ARM.exidx     0x0800a5e0        0x0 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu\libgcc.a(_udivdi3.o)
+ .ARM.exidx     0x0800a6d0        0x8 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu\libgcc.a(_divdi3.o)
+ .ARM.exidx     0x0800a6d8        0x0 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu\libgcc.a(_udivdi3.o)
                                   0x8 (size before relaxing)
-                0x0800a5e0                __exidx_end = .
+                0x0800a6d8                __exidx_end = .
 
-.rel.dyn        0x0800a5e0        0x0
+.rel.dyn        0x0800a6d8        0x0
  .rel.iplt      0x00000000        0x0 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtbegin.o
 
-.preinit_array  0x0800a5e0        0x0
-                0x0800a5e0                PROVIDE (__preinit_array_start, .)
+.preinit_array  0x0800a6d8        0x0
+                0x0800a6d8                PROVIDE (__preinit_array_start, .)
  *(.preinit_array*)
-                0x0800a5e0                PROVIDE (__preinit_array_end, .)
+                0x0800a6d8                PROVIDE (__preinit_array_end, .)
 
-.init_array     0x0800a5e0        0x8
-                0x0800a5e0                PROVIDE (__init_array_start, .)
+.init_array     0x0800a6d8        0x8
+                0x0800a6d8                PROVIDE (__init_array_start, .)
  *(SORT(.init_array.*))
  .init_array.00000
-                0x0800a5e0        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__call_atexit.o)
+                0x0800a6d8        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__call_atexit.o)
  *(.init_array*)
- .init_array    0x0800a5e4        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtbegin.o
-                0x0800a5e8                PROVIDE (__init_array_end, .)
+ .init_array    0x0800a6dc        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtbegin.o
+                0x0800a6e0                PROVIDE (__init_array_end, .)
 
-.fini_array     0x0800a5e8        0x4
-                0x0800a5e8                PROVIDE (__fini_array_start, .)
+.fini_array     0x0800a6e0        0x4
+                0x0800a6e0                PROVIDE (__fini_array_start, .)
  *(.fini_array*)
- .fini_array    0x0800a5e8        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtbegin.o
+ .fini_array    0x0800a6e0        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtbegin.o
  *(SORT(.fini_array.*))
-                0x0800a5ec                PROVIDE (__fini_array_end, .)
-                0x0800a5ec                _sidata = .
+                0x0800a6e4                PROVIDE (__fini_array_end, .)
+                0x0800a6e4                _sidata = .
 
-.data           0x20000000      0x8c8 load address 0x0800a5ec
+.data           0x20000000      0x8c8 load address 0x0800a6e4
                 0x20000000                . = ALIGN (0x4)
                 0x20000000                _sdata = .
  *(.data)
@@ -6985,14 +6992,14 @@ LOAD c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.w
                 0x200008c8                . = ALIGN (0x4)
                 0x200008c8                _edata = .
 
-.jcr            0x200008c8        0x0 load address 0x0800aeb4
+.jcr            0x200008c8        0x0 load address 0x0800afac
  .jcr           0x200008c8        0x0 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtbegin.o
 
-.igot.plt       0x200008c8        0x0 load address 0x0800aeb4
+.igot.plt       0x200008c8        0x0 load address 0x0800afac
  .igot.plt      0x00000000        0x0 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtbegin.o
                 0x200008c8                . = ALIGN (0x4)
 
-.bss            0x200008c8      0xabc load address 0x0800aeb4
+.bss            0x200008c8      0xac4 load address 0x0800afac
                 0x200008c8                _sbss = .
                 0x200008c8                __bss_start__ = _sbss
  *(.bss)
@@ -7004,7 +7011,7 @@ LOAD c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.w
                 0x200008f4                ulHighFrequencyTimerTick
                 0x200008f8                read_byte
  .bss           0x200008fc      0x3f0 src\UARTCommandConsoleTask.o
- .bss           0x20000cec       0x28 src\StepperControlTask.o
+ .bss           0x20000cec       0x2c src\StepperControlTask.o
                 0x20000cec                PrescalerValue
                 0x20000cf0                offset
                 0x20000cf4                MSBdataRX
@@ -7014,51 +7021,53 @@ LOAD c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.w
                 0x20000d04                count
                 0x20000d08                n
                 0x20000d0c                m
- .bss           0x20000d14      0x3f0 src\FreeRTOS_CLI.o
- .bss           0x20001104       0x38 src\FreeRTOS\timers.o
- .bss           0x2000113c       0xf0 src\FreeRTOS\tasks.o
-                0x2000113c                pxCurrentTCB
- .bss           0x2000122c        0x8 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
- .bss           0x20001234        0x8 src\CLI-commands.o
+                0x20000d10                CCW
+ .bss           0x20000d18      0x3f0 src\FreeRTOS_CLI.o
+ .bss           0x20001108       0x38 src\FreeRTOS\timers.o
+ .bss           0x20001140       0xf0 src\FreeRTOS\tasks.o
+                0x20001140                pxCurrentTCB
+ .bss           0x20001230        0x8 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+ .bss           0x20001238        0x8 src\CLI-commands.o
  *(.bss*)
  .bss.__malloc_max_total_mem
-                0x2000123c        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mallocr.o)
-                0x2000123c                __malloc_max_total_mem
- .bss.__malloc_max_sbrked_mem
                 0x20001240        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mallocr.o)
-                0x20001240                __malloc_max_sbrked_mem
- .bss.__malloc_top_pad
+                0x20001240                __malloc_max_total_mem
+ .bss.__malloc_max_sbrked_mem
                 0x20001244        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mallocr.o)
-                0x20001244                __malloc_top_pad
+                0x20001244                __malloc_max_sbrked_mem
+ .bss.__malloc_top_pad
+                0x20001248        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mallocr.o)
+                0x20001248                __malloc_top_pad
  .bss.__malloc_current_mallinfo
-                0x20001248       0x28 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mallocr.o)
-                0x20001248                __malloc_current_mallinfo
+                0x2000124c       0x28 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mallocr.o)
+                0x2000124c                __malloc_current_mallinfo
  *(COMMON)
- COMMON         0x20001270       0xd0 src\StepperControlTask.o
-                0x20001270                Codeur_count
-                0x20001274                TIM_TimeBaseStructure
-                0x20001280                Codeur_total
-                0x20001284                dataRX
-                0x20001288                buffer
-                0x200012ac                TIM_OCInitStructure
-                0x200012c0                wr
- COMMON         0x20001340       0x40 src\FreeRTOS\queue.o
-                0x20001340                xQueueRegistry
- COMMON         0x20001380        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-reent.o)
-                0x20001380                errno
-                0x20001384                . = ALIGN (0x4)
-                0x20001384                _ebss = .
-                0x20001384                __bss_end__ = _ebss
+ COMMON         0x20001274       0xd4 src\StepperControlTask.o
+                0x20001274                Codeur_count
+                0x20001278                TIM_TimeBaseStructure
+                0x20001284                Codeur_total
+                0x20001288                dataRX
+                0x2000128c                buffer
+                0x200012b0                TIM_OCInitStructure
+                0x200012c4                cyclecount
+                0x200012c8                wr
+ COMMON         0x20001348       0x40 src\FreeRTOS\queue.o
+                0x20001348                xQueueRegistry
+ COMMON         0x20001388        0x4 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-reent.o)
+                0x20001388                errno
+                0x2000138c                . = ALIGN (0x4)
+                0x2000138c                _ebss = .
+                0x2000138c                __bss_end__ = _ebss
 
 ._user_heap_stack
-                0x20001384      0x400 load address 0x0800b970
-                0x20001384                . = ALIGN (0x4)
-                0x20001384                PROVIDE (end, .)
-                0x20001384                PROVIDE (_end, .)
-                0x20001384                . = (. + _Min_Heap_Size)
-                0x20001784                . = (. + _Min_Stack_Size)
- *fill*         0x20001384      0x400 
-                0x20001784                . = ALIGN (0x4)
+                0x2000138c      0x400 load address 0x0800ba70
+                0x2000138c                . = ALIGN (0x4)
+                0x2000138c                PROVIDE (end, .)
+                0x2000138c                PROVIDE (_end, .)
+                0x2000138c                . = (. + _Min_Heap_Size)
+                0x2000178c                . = (. + _Min_Stack_Size)
+ *fill*         0x2000138c      0x400 
+                0x2000178c                . = ALIGN (0x4)
 
 .memory_b1_text
  *(.mb1text)
@@ -7222,63 +7231,63 @@ LOAD c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.w
                 0x00000e78       0x22 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu/crtn.o
 OUTPUT(GIT-FreeRTOS-Cli.elf elf32-littlearm)
 
-.debug_line     0x00000000     0xd48e
+.debug_line     0x00000000     0xd50a
  .debug_line    0x00000000       0x7b startup\startup_stm32f4xx.o
  .debug_line    0x0000007b      0x70b src\system_stm32f4xx.o
  .debug_line    0x00000786      0x547 src\syscalls.o
  .debug_line    0x00000ccd      0x8d3 src\stm32f4xx_it.o
  .debug_line    0x000015a0      0xa22 src\serial.o
- .debug_line    0x00001fc2      0x859 src\peripherals.o
- .debug_line    0x0000281b      0x9ed src\main.o
- .debug_line    0x00003208      0x5ea src\UARTCommandConsoleTask.o
- .debug_line    0x000037f2      0xa72 src\StepperControlTask.o
- .debug_line    0x00004264      0x9c7 src\LEDControlTask.o
- .debug_line    0x00004c2b      0x60a src\FreeRTOS_CLI.o
- .debug_line    0x00005235      0x75c src\FreeRTOS\timers.o
- .debug_line    0x00005991     0x1024 src\FreeRTOS\tasks.o
- .debug_line    0x000069b5      0xcc2 src\FreeRTOS\queue.o
- .debug_line    0x00007677      0x52b src\FreeRTOS\portable\MemMang\heap_3.o
- .debug_line    0x00007ba2      0x642 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
- .debug_line    0x000081e4      0x568 src\FreeRTOS\list.o
- .debug_line    0x0000874c      0x6b4 src\CLI-commands.o
- .debug_line    0x00008e00      0x71a Utilities\stm32f4_discovery.o
- .debug_line    0x0000951a      0x929 StdPeriph_Driver\src\stm32f4xx_usart.o
- .debug_line    0x00009e43      0xf06 StdPeriph_Driver\src\stm32f4xx_tim.o
- .debug_line    0x0000ad49      0x700 StdPeriph_Driver\src\stm32f4xx_syscfg.o
- .debug_line    0x0000b449      0xa3d StdPeriph_Driver\src\stm32f4xx_rcc.o
- .debug_line    0x0000be86      0x7de StdPeriph_Driver\src\stm32f4xx_gpio.o
- .debug_line    0x0000c664      0x740 StdPeriph_Driver\src\stm32f4xx_exti.o
- .debug_line    0x0000cda4      0x6ea StdPeriph_Driver\src\misc.o
+ .debug_line    0x00001fc2      0x871 src\peripherals.o
+ .debug_line    0x00002833      0x9ed src\main.o
+ .debug_line    0x00003220      0x5ea src\UARTCommandConsoleTask.o
+ .debug_line    0x0000380a      0xad1 src\StepperControlTask.o
+ .debug_line    0x000042db      0x9c7 src\LEDControlTask.o
+ .debug_line    0x00004ca2      0x60a src\FreeRTOS_CLI.o
+ .debug_line    0x000052ac      0x75c src\FreeRTOS\timers.o
+ .debug_line    0x00005a08     0x1024 src\FreeRTOS\tasks.o
+ .debug_line    0x00006a2c      0xcc2 src\FreeRTOS\queue.o
+ .debug_line    0x000076ee      0x52b src\FreeRTOS\portable\MemMang\heap_3.o
+ .debug_line    0x00007c19      0x642 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+ .debug_line    0x0000825b      0x568 src\FreeRTOS\list.o
+ .debug_line    0x000087c3      0x6b9 src\CLI-commands.o
+ .debug_line    0x00008e7c      0x71a Utilities\stm32f4_discovery.o
+ .debug_line    0x00009596      0x929 StdPeriph_Driver\src\stm32f4xx_usart.o
+ .debug_line    0x00009ebf      0xf06 StdPeriph_Driver\src\stm32f4xx_tim.o
+ .debug_line    0x0000adc5      0x700 StdPeriph_Driver\src\stm32f4xx_syscfg.o
+ .debug_line    0x0000b4c5      0xa3d StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .debug_line    0x0000bf02      0x7de StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .debug_line    0x0000c6e0      0x740 StdPeriph_Driver\src\stm32f4xx_exti.o
+ .debug_line    0x0000ce20      0x6ea StdPeriph_Driver\src\misc.o
 
-.debug_info     0x00000000     0xcffd
+.debug_info     0x00000000     0xd0a2
  .debug_info    0x00000000       0x8f startup\startup_stm32f4xx.o
  .debug_info    0x0000008f      0x59a src\system_stm32f4xx.o
  .debug_info    0x00000629      0x660 src\syscalls.o
  .debug_info    0x00000c89      0x376 src\stm32f4xx_it.o
  .debug_info    0x00000fff      0x6ba src\serial.o
- .debug_info    0x000016b9      0x98b src\peripherals.o
- .debug_info    0x00002044      0x7a6 src\main.o
- .debug_info    0x000027ea      0x29e src\UARTCommandConsoleTask.o
- .debug_info    0x00002a88      0xb6d src\StepperControlTask.o
- .debug_info    0x000035f5      0x49e src\LEDControlTask.o
- .debug_info    0x00003a93      0x453 src\FreeRTOS_CLI.o
- .debug_info    0x00003ee6      0x90b src\FreeRTOS\timers.o
- .debug_info    0x000047f1     0x1bbe src\FreeRTOS\tasks.o
- .debug_info    0x000063af     0x1268 src\FreeRTOS\queue.o
- .debug_info    0x00007617       0xf1 src\FreeRTOS\portable\MemMang\heap_3.o
- .debug_info    0x00007708      0x4e5 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
- .debug_info    0x00007bed      0x2a1 src\FreeRTOS\list.o
- .debug_info    0x00007e8e      0x544 src\CLI-commands.o
- .debug_info    0x000083d2      0x891 Utilities\stm32f4_discovery.o
- .debug_info    0x00008c63      0x9ca StdPeriph_Driver\src\stm32f4xx_usart.o
- .debug_info    0x0000962d     0x1c69 StdPeriph_Driver\src\stm32f4xx_tim.o
- .debug_info    0x0000b296      0x274 StdPeriph_Driver\src\stm32f4xx_syscfg.o
- .debug_info    0x0000b50a      0xc55 StdPeriph_Driver\src\stm32f4xx_rcc.o
- .debug_info    0x0000c15f      0x60a StdPeriph_Driver\src\stm32f4xx_gpio.o
- .debug_info    0x0000c769      0x34f StdPeriph_Driver\src\stm32f4xx_exti.o
- .debug_info    0x0000cab8      0x545 StdPeriph_Driver\src\misc.o
+ .debug_info    0x000016b9      0x9af src\peripherals.o
+ .debug_info    0x00002068      0x7a6 src\main.o
+ .debug_info    0x0000280e      0x29e src\UARTCommandConsoleTask.o
+ .debug_info    0x00002aac      0xbee src\StepperControlTask.o
+ .debug_info    0x0000369a      0x49e src\LEDControlTask.o
+ .debug_info    0x00003b38      0x453 src\FreeRTOS_CLI.o
+ .debug_info    0x00003f8b      0x90b src\FreeRTOS\timers.o
+ .debug_info    0x00004896     0x1bbe src\FreeRTOS\tasks.o
+ .debug_info    0x00006454     0x1268 src\FreeRTOS\queue.o
+ .debug_info    0x000076bc       0xf1 src\FreeRTOS\portable\MemMang\heap_3.o
+ .debug_info    0x000077ad      0x4e5 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+ .debug_info    0x00007c92      0x2a1 src\FreeRTOS\list.o
+ .debug_info    0x00007f33      0x544 src\CLI-commands.o
+ .debug_info    0x00008477      0x891 Utilities\stm32f4_discovery.o
+ .debug_info    0x00008d08      0x9ca StdPeriph_Driver\src\stm32f4xx_usart.o
+ .debug_info    0x000096d2     0x1c69 StdPeriph_Driver\src\stm32f4xx_tim.o
+ .debug_info    0x0000b33b      0x274 StdPeriph_Driver\src\stm32f4xx_syscfg.o
+ .debug_info    0x0000b5af      0xc55 StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .debug_info    0x0000c204      0x60a StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .debug_info    0x0000c80e      0x34f StdPeriph_Driver\src\stm32f4xx_exti.o
+ .debug_info    0x0000cb5d      0x545 StdPeriph_Driver\src\misc.o
 
-.debug_abbrev   0x00000000     0x2544
+.debug_abbrev   0x00000000     0x255c
  .debug_abbrev  0x00000000       0x12 startup\startup_stm32f4xx.o
  .debug_abbrev  0x00000012      0x13b src\system_stm32f4xx.o
  .debug_abbrev  0x0000014d      0x174 src\syscalls.o
@@ -7287,26 +7296,26 @@ OUTPUT(GIT-FreeRTOS-Cli.elf elf32-littlearm)
  .debug_abbrev  0x0000055c      0x122 src\peripherals.o
  .debug_abbrev  0x0000067e      0x1b0 src\main.o
  .debug_abbrev  0x0000082e      0x11b src\UARTCommandConsoleTask.o
- .debug_abbrev  0x00000949      0x1da src\StepperControlTask.o
- .debug_abbrev  0x00000b23      0x127 src\LEDControlTask.o
- .debug_abbrev  0x00000c4a      0x19e src\FreeRTOS_CLI.o
- .debug_abbrev  0x00000de8      0x1c5 src\FreeRTOS\timers.o
- .debug_abbrev  0x00000fad      0x2a3 src\FreeRTOS\tasks.o
- .debug_abbrev  0x00001250      0x20b src\FreeRTOS\queue.o
- .debug_abbrev  0x0000145b       0xbc src\FreeRTOS\portable\MemMang\heap_3.o
- .debug_abbrev  0x00001517      0x1d1 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
- .debug_abbrev  0x000016e8       0xc1 src\FreeRTOS\list.o
- .debug_abbrev  0x000017a9      0x173 src\CLI-commands.o
- .debug_abbrev  0x0000191c      0x188 Utilities\stm32f4_discovery.o
- .debug_abbrev  0x00001aa4      0x15a StdPeriph_Driver\src\stm32f4xx_usart.o
- .debug_abbrev  0x00001bfe      0x18c StdPeriph_Driver\src\stm32f4xx_tim.o
- .debug_abbrev  0x00001d8a      0x136 StdPeriph_Driver\src\stm32f4xx_syscfg.o
- .debug_abbrev  0x00001ec0      0x1e8 StdPeriph_Driver\src\stm32f4xx_rcc.o
- .debug_abbrev  0x000020a8      0x1a8 StdPeriph_Driver\src\stm32f4xx_gpio.o
- .debug_abbrev  0x00002250      0x1aa StdPeriph_Driver\src\stm32f4xx_exti.o
- .debug_abbrev  0x000023fa      0x14a StdPeriph_Driver\src\misc.o
+ .debug_abbrev  0x00000949      0x1f2 src\StepperControlTask.o
+ .debug_abbrev  0x00000b3b      0x127 src\LEDControlTask.o
+ .debug_abbrev  0x00000c62      0x19e src\FreeRTOS_CLI.o
+ .debug_abbrev  0x00000e00      0x1c5 src\FreeRTOS\timers.o
+ .debug_abbrev  0x00000fc5      0x2a3 src\FreeRTOS\tasks.o
+ .debug_abbrev  0x00001268      0x20b src\FreeRTOS\queue.o
+ .debug_abbrev  0x00001473       0xbc src\FreeRTOS\portable\MemMang\heap_3.o
+ .debug_abbrev  0x0000152f      0x1d1 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+ .debug_abbrev  0x00001700       0xc1 src\FreeRTOS\list.o
+ .debug_abbrev  0x000017c1      0x173 src\CLI-commands.o
+ .debug_abbrev  0x00001934      0x188 Utilities\stm32f4_discovery.o
+ .debug_abbrev  0x00001abc      0x15a StdPeriph_Driver\src\stm32f4xx_usart.o
+ .debug_abbrev  0x00001c16      0x18c StdPeriph_Driver\src\stm32f4xx_tim.o
+ .debug_abbrev  0x00001da2      0x136 StdPeriph_Driver\src\stm32f4xx_syscfg.o
+ .debug_abbrev  0x00001ed8      0x1e8 StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .debug_abbrev  0x000020c0      0x1a8 StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .debug_abbrev  0x00002268      0x1aa StdPeriph_Driver\src\stm32f4xx_exti.o
+ .debug_abbrev  0x00002412      0x14a StdPeriph_Driver\src\misc.o
 
-.debug_aranges  0x00000000      0xed8
+.debug_aranges  0x00000000      0xef0
  .debug_aranges
                 0x00000000       0x28 startup\startup_stm32f4xx.o
  .debug_aranges
@@ -7318,75 +7327,75 @@ OUTPUT(GIT-FreeRTOS-Cli.elf elf32-littlearm)
  .debug_aranges
                 0x00000160       0x50 src\serial.o
  .debug_aranges
-                0x000001b0       0x48 src\peripherals.o
+                0x000001b0       0x50 src\peripherals.o
  .debug_aranges
-                0x000001f8       0x50 src\main.o
+                0x00000200       0x50 src\main.o
  .debug_aranges
-                0x00000248       0x30 src\UARTCommandConsoleTask.o
+                0x00000250       0x30 src\UARTCommandConsoleTask.o
  .debug_aranges
-                0x00000278       0x60 src\StepperControlTask.o
+                0x00000280       0x70 src\StepperControlTask.o
  .debug_aranges
-                0x000002d8       0x28 src\LEDControlTask.o
+                0x000002f0       0x28 src\LEDControlTask.o
  .debug_aranges
-                0x00000300       0x48 src\FreeRTOS_CLI.o
+                0x00000318       0x48 src\FreeRTOS_CLI.o
  .debug_aranges
-                0x00000348       0x90 src\FreeRTOS\timers.o
+                0x00000360       0x90 src\FreeRTOS\timers.o
  .debug_aranges
-                0x000003d8      0x1b0 src\FreeRTOS\tasks.o
+                0x000003f0      0x1b0 src\FreeRTOS\tasks.o
  .debug_aranges
-                0x00000588      0x100 src\FreeRTOS\queue.o
+                0x000005a0      0x100 src\FreeRTOS\queue.o
  .debug_aranges
-                0x00000688       0x28 src\FreeRTOS\portable\MemMang\heap_3.o
+                0x000006a0       0x28 src\FreeRTOS\portable\MemMang\heap_3.o
  .debug_aranges
-                0x000006b0       0x80 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+                0x000006c8       0x80 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
  .debug_aranges
-                0x00000730       0x40 src\FreeRTOS\list.o
+                0x00000748       0x40 src\FreeRTOS\list.o
  .debug_aranges
-                0x00000770       0x48 src\CLI-commands.o
+                0x00000788       0x48 src\CLI-commands.o
  .debug_aranges
-                0x000007b8       0x48 Utilities\stm32f4_discovery.o
+                0x000007d0       0x48 Utilities\stm32f4_discovery.o
  .debug_aranges
-                0x00000800      0x100 StdPeriph_Driver\src\stm32f4xx_usart.o
+                0x00000818      0x100 StdPeriph_Driver\src\stm32f4xx_usart.o
  .debug_aranges
-                0x00000900      0x2f8 StdPeriph_Driver\src\stm32f4xx_tim.o
+                0x00000918      0x2f8 StdPeriph_Driver\src\stm32f4xx_tim.o
  .debug_aranges
-                0x00000bf8       0x48 StdPeriph_Driver\src\stm32f4xx_syscfg.o
+                0x00000c10       0x48 StdPeriph_Driver\src\stm32f4xx_syscfg.o
  .debug_aranges
-                0x00000c40      0x178 StdPeriph_Driver\src\stm32f4xx_rcc.o
+                0x00000c58      0x178 StdPeriph_Driver\src\stm32f4xx_rcc.o
  .debug_aranges
-                0x00000db8       0x88 StdPeriph_Driver\src\stm32f4xx_gpio.o
+                0x00000dd0       0x88 StdPeriph_Driver\src\stm32f4xx_gpio.o
  .debug_aranges
-                0x00000e40       0x58 StdPeriph_Driver\src\stm32f4xx_exti.o
+                0x00000e58       0x58 StdPeriph_Driver\src\stm32f4xx_exti.o
  .debug_aranges
-                0x00000e98       0x40 StdPeriph_Driver\src\misc.o
+                0x00000eb0       0x40 StdPeriph_Driver\src\misc.o
 
-.debug_ranges   0x00000000      0xd40
+.debug_ranges   0x00000000      0xd58
  .debug_ranges  0x00000000       0x20 startup\startup_stm32f4xx.o
  .debug_ranges  0x00000020       0x20 src\system_stm32f4xx.o
  .debug_ranges  0x00000040       0xa0 src\syscalls.o
  .debug_ranges  0x000000e0       0x48 src\stm32f4xx_it.o
  .debug_ranges  0x00000128       0x40 src\serial.o
- .debug_ranges  0x00000168       0x38 src\peripherals.o
- .debug_ranges  0x000001a0       0x40 src\main.o
- .debug_ranges  0x000001e0       0x20 src\UARTCommandConsoleTask.o
- .debug_ranges  0x00000200       0x50 src\StepperControlTask.o
- .debug_ranges  0x00000250       0x18 src\LEDControlTask.o
- .debug_ranges  0x00000268       0x38 src\FreeRTOS_CLI.o
- .debug_ranges  0x000002a0       0x80 src\FreeRTOS\timers.o
- .debug_ranges  0x00000320      0x1a0 src\FreeRTOS\tasks.o
- .debug_ranges  0x000004c0       0xf0 src\FreeRTOS\queue.o
- .debug_ranges  0x000005b0       0x18 src\FreeRTOS\portable\MemMang\heap_3.o
- .debug_ranges  0x000005c8       0x70 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
- .debug_ranges  0x00000638       0x30 src\FreeRTOS\list.o
- .debug_ranges  0x00000668       0x38 src\CLI-commands.o
- .debug_ranges  0x000006a0       0x38 Utilities\stm32f4_discovery.o
- .debug_ranges  0x000006d8       0xf0 StdPeriph_Driver\src\stm32f4xx_usart.o
- .debug_ranges  0x000007c8      0x2e8 StdPeriph_Driver\src\stm32f4xx_tim.o
- .debug_ranges  0x00000ab0       0x38 StdPeriph_Driver\src\stm32f4xx_syscfg.o
- .debug_ranges  0x00000ae8      0x168 StdPeriph_Driver\src\stm32f4xx_rcc.o
- .debug_ranges  0x00000c50       0x78 StdPeriph_Driver\src\stm32f4xx_gpio.o
- .debug_ranges  0x00000cc8       0x48 StdPeriph_Driver\src\stm32f4xx_exti.o
- .debug_ranges  0x00000d10       0x30 StdPeriph_Driver\src\misc.o
+ .debug_ranges  0x00000168       0x40 src\peripherals.o
+ .debug_ranges  0x000001a8       0x40 src\main.o
+ .debug_ranges  0x000001e8       0x20 src\UARTCommandConsoleTask.o
+ .debug_ranges  0x00000208       0x60 src\StepperControlTask.o
+ .debug_ranges  0x00000268       0x18 src\LEDControlTask.o
+ .debug_ranges  0x00000280       0x38 src\FreeRTOS_CLI.o
+ .debug_ranges  0x000002b8       0x80 src\FreeRTOS\timers.o
+ .debug_ranges  0x00000338      0x1a0 src\FreeRTOS\tasks.o
+ .debug_ranges  0x000004d8       0xf0 src\FreeRTOS\queue.o
+ .debug_ranges  0x000005c8       0x18 src\FreeRTOS\portable\MemMang\heap_3.o
+ .debug_ranges  0x000005e0       0x70 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+ .debug_ranges  0x00000650       0x30 src\FreeRTOS\list.o
+ .debug_ranges  0x00000680       0x38 src\CLI-commands.o
+ .debug_ranges  0x000006b8       0x38 Utilities\stm32f4_discovery.o
+ .debug_ranges  0x000006f0       0xf0 StdPeriph_Driver\src\stm32f4xx_usart.o
+ .debug_ranges  0x000007e0      0x2e8 StdPeriph_Driver\src\stm32f4xx_tim.o
+ .debug_ranges  0x00000ac8       0x38 StdPeriph_Driver\src\stm32f4xx_syscfg.o
+ .debug_ranges  0x00000b00      0x168 StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .debug_ranges  0x00000c68       0x78 StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .debug_ranges  0x00000ce0       0x48 StdPeriph_Driver\src\stm32f4xx_exti.o
+ .debug_ranges  0x00000d28       0x30 StdPeriph_Driver\src\misc.o
 
 .debug_macro    0x00000000    0x134c7
  .debug_macro   0x00000000      0x1ce src\system_stm32f4xx.o
@@ -7515,7 +7524,7 @@ OUTPUT(GIT-FreeRTOS-Cli.elf elf32-littlearm)
  .debug_macro   0x000132a1      0x1ad StdPeriph_Driver\src\misc.o
  .debug_macro   0x0001344e       0x79 StdPeriph_Driver\src\misc.o
 
-.debug_str      0x00000000    0x6474d
+.debug_str      0x00000000    0x64783
  .debug_str     0x00000000    0x55af0 src\system_stm32f4xx.o
                               0x55c9e (size before relaxing)
  .debug_str     0x00055af0     0x3fac src\syscalls.o
@@ -7524,47 +7533,47 @@ OUTPUT(GIT-FreeRTOS-Cli.elf elf32-littlearm)
                               0x583c1 (size before relaxing)
  .debug_str     0x0005c10b     0x21ea src\serial.o
                               0x5d36e (size before relaxing)
- .debug_str     0x0005e2f5      0x69d src\peripherals.o
-                              0x596cd (size before relaxing)
- .debug_str     0x0005e992      0x3d2 src\main.o
+ .debug_str     0x0005e2f5      0x6a9 src\peripherals.o
+                              0x596d9 (size before relaxing)
+ .debug_str     0x0005e99e      0x3d2 src\main.o
                               0x5d60d (size before relaxing)
- .debug_str     0x0005ed64      0x1b7 src\UARTCommandConsoleTask.o
+ .debug_str     0x0005ed70      0x1b7 src\UARTCommandConsoleTask.o
                                0xa365 (size before relaxing)
- .debug_str     0x0005ef1b      0x1de src\StepperControlTask.o
-                              0x5d589 (size before relaxing)
- .debug_str     0x0005f0f9       0x72 src\LEDControlTask.o
+ .debug_str     0x0005ef27      0x208 src\StepperControlTask.o
+                              0x5d5b3 (size before relaxing)
+ .debug_str     0x0005f12f       0x72 src\LEDControlTask.o
                               0x5d1ff (size before relaxing)
- .debug_str     0x0005f16b      0x2a8 src\FreeRTOS_CLI.o
+ .debug_str     0x0005f1a1      0x2a8 src\FreeRTOS_CLI.o
                                0x869b (size before relaxing)
- .debug_str     0x0005f413      0xc33 src\FreeRTOS\timers.o
+ .debug_str     0x0005f449      0xc33 src\FreeRTOS\timers.o
                                0x9b38 (size before relaxing)
- .debug_str     0x00060046     0x14c0 src\FreeRTOS\tasks.o
+ .debug_str     0x0006007c     0x14c0 src\FreeRTOS\tasks.o
                                0xaed1 (size before relaxing)
- .debug_str     0x00061506      0x68b src\FreeRTOS\queue.o
+ .debug_str     0x0006153c      0x68b src\FreeRTOS\queue.o
                                0x9708 (size before relaxing)
- .debug_str     0x00061b91       0x56 src\FreeRTOS\portable\MemMang\heap_3.o
+ .debug_str     0x00061bc7       0x56 src\FreeRTOS\portable\MemMang\heap_3.o
                                0x849a (size before relaxing)
- .debug_str     0x00061be7      0x724 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+ .debug_str     0x00061c1d      0x724 src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
                                0x697e (size before relaxing)
- .debug_str     0x0006230b       0x96 src\FreeRTOS\list.o
+ .debug_str     0x00062341       0x96 src\FreeRTOS\list.o
                                0x8148 (size before relaxing)
- .debug_str     0x000623a1      0x187 src\CLI-commands.o
+ .debug_str     0x000623d7      0x187 src\CLI-commands.o
                                0x9337 (size before relaxing)
- .debug_str     0x00062528      0x229 Utilities\stm32f4_discovery.o
+ .debug_str     0x0006255e      0x229 Utilities\stm32f4_discovery.o
                               0x56638 (size before relaxing)
- .debug_str     0x00062751      0x508 StdPeriph_Driver\src\stm32f4xx_usart.o
+ .debug_str     0x00062787      0x508 StdPeriph_Driver\src\stm32f4xx_usart.o
                               0x56063 (size before relaxing)
- .debug_str     0x00062c59      0xaa4 StdPeriph_Driver\src\stm32f4xx_tim.o
+ .debug_str     0x00062c8f      0xaa4 StdPeriph_Driver\src\stm32f4xx_tim.o
                               0x56747 (size before relaxing)
- .debug_str     0x000636fd      0x2a2 StdPeriph_Driver\src\stm32f4xx_syscfg.o
+ .debug_str     0x00063733      0x2a2 StdPeriph_Driver\src\stm32f4xx_syscfg.o
                               0x55d04 (size before relaxing)
- .debug_str     0x0006399f      0x9ca StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .debug_str     0x000639d5      0x9ca StdPeriph_Driver\src\stm32f4xx_rcc.o
                               0x565d4 (size before relaxing)
- .debug_str     0x00064369      0x16c StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .debug_str     0x0006439f      0x16c StdPeriph_Driver\src\stm32f4xx_gpio.o
                               0x55d53 (size before relaxing)
- .debug_str     0x000644d5      0x10e StdPeriph_Driver\src\stm32f4xx_exti.o
+ .debug_str     0x0006450b      0x10e StdPeriph_Driver\src\stm32f4xx_exti.o
                               0x55c2b (size before relaxing)
- .debug_str     0x000645e3      0x16a StdPeriph_Driver\src\misc.o
+ .debug_str     0x00064619      0x16a StdPeriph_Driver\src\misc.o
                               0x55ca8 (size before relaxing)
 
 .comment        0x00000000       0x70
@@ -7595,65 +7604,65 @@ OUTPUT(GIT-FreeRTOS-Cli.elf elf32-littlearm)
  .comment       0x00000000       0x71 StdPeriph_Driver\src\stm32f4xx_exti.o
  .comment       0x00000000       0x71 StdPeriph_Driver\src\misc.o
 
-.debug_frame    0x00000000     0x4738
+.debug_frame    0x00000000     0x47a0
  .debug_frame   0x00000000       0x7c src\system_stm32f4xx.o
  .debug_frame   0x0000007c      0x2d4 src\syscalls.o
  .debug_frame   0x00000350       0xec src\stm32f4xx_it.o
  .debug_frame   0x0000043c      0x110 src\serial.o
- .debug_frame   0x0000054c       0xe8 src\peripherals.o
- .debug_frame   0x00000634       0xf4 src\main.o
- .debug_frame   0x00000728       0x7c src\UARTCommandConsoleTask.o
- .debug_frame   0x000007a4      0x130 src\StepperControlTask.o
- .debug_frame   0x000008d4       0x54 src\LEDControlTask.o
- .debug_frame   0x00000928       0xec src\FreeRTOS_CLI.o
- .debug_frame   0x00000a14      0x23c src\FreeRTOS\timers.o
- .debug_frame   0x00000c50      0x75c src\FreeRTOS\tasks.o
- .debug_frame   0x000013ac      0x44c src\FreeRTOS\queue.o
- .debug_frame   0x000017f8       0x58 src\FreeRTOS\portable\MemMang\heap_3.o
- .debug_frame   0x00001850      0x19c src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
- .debug_frame   0x000019ec       0xd8 src\FreeRTOS\list.o
- .debug_frame   0x00001ac4       0xf0 src\CLI-commands.o
- .debug_frame   0x00001bb4       0xf4 Utilities\stm32f4_discovery.o
- .debug_frame   0x00001ca8      0x490 StdPeriph_Driver\src\stm32f4xx_usart.o
- .debug_frame   0x00002138      0xe54 StdPeriph_Driver\src\stm32f4xx_tim.o
- .debug_frame   0x00002f8c       0xf4 StdPeriph_Driver\src\stm32f4xx_syscfg.o
- .debug_frame   0x00003080      0x6d4 StdPeriph_Driver\src\stm32f4xx_rcc.o
- .debug_frame   0x00003754      0x23c StdPeriph_Driver\src\stm32f4xx_gpio.o
- .debug_frame   0x00003990      0x148 StdPeriph_Driver\src\stm32f4xx_exti.o
- .debug_frame   0x00003ad8       0xd8 StdPeriph_Driver\src\misc.o
- .debug_frame   0x00003bb0       0x30 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-atoi.o)
- .debug_frame   0x00003be0       0x20 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-errno.o)
- .debug_frame   0x00003c00       0x2c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-init.o)
- .debug_frame   0x00003c2c       0x30 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-malloc.o)
- .debug_frame   0x00003c5c       0x58 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mallocr.o)
- .debug_frame   0x00003cb4       0x38 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memcmp.o)
- .debug_frame   0x00003cec       0x34 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memset.o)
- .debug_frame   0x00003d20       0x30 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mlock.o)
- .debug_frame   0x00003d50       0x2c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-sbrkr.o)
- .debug_frame   0x00003d7c       0x84 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-sprintf.o)
- .debug_frame   0x00003e00       0x20 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strcpy.o)
- .debug_frame   0x00003e20       0x20 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strlen.o)
- .debug_frame   0x00003e40       0x30 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strncat.o)
- .debug_frame   0x00003e70       0x54 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strncmp.o)
- .debug_frame   0x00003ec4       0x34 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strncpy.o)
- .debug_frame   0x00003ef8       0x54 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strtol.o)
- .debug_frame   0x00003f4c       0x40 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-svfprintf.o)
- .debug_frame   0x00003f8c       0x50 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__call_atexit.o)
- .debug_frame   0x00003fdc       0x20 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-atexit.o)
- .debug_frame   0x00003ffc       0x88 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-dtoa.o)
- .debug_frame   0x00004084       0x34 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-fini.o)
- .debug_frame   0x000040b8       0x74 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-freer.o)
- .debug_frame   0x0000412c       0x9c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-locale.o)
- .debug_frame   0x000041c8       0x3c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memchr.o)
- .debug_frame   0x00004204      0x268 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
- .debug_frame   0x0000446c       0x58 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-reent.o)
- .debug_frame   0x000044c4       0x34 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-s_fpclassify.o)
- .debug_frame   0x000044f8       0x78 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-svfiprintf.o)
- .debug_frame   0x00004570       0x34 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__atexit.o)
- .debug_frame   0x000045a4       0x28 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-callocr.o)
- .debug_frame   0x000045cc       0x30 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memmove.o)
- .debug_frame   0x000045fc       0x60 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-reallocr.o)
- .debug_frame   0x0000465c       0x28 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu\libgcc.a(_aeabi_uldivmod.o)
- .debug_frame   0x00004684       0x50 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu\libgcc.a(bpabi.o)
- .debug_frame   0x000046d4       0x34 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu\libgcc.a(_divdi3.o)
- .debug_frame   0x00004708       0x30 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu\libgcc.a(_udivdi3.o)
+ .debug_frame   0x0000054c      0x10c src\peripherals.o
+ .debug_frame   0x00000658       0xf4 src\main.o
+ .debug_frame   0x0000074c       0x7c src\UARTCommandConsoleTask.o
+ .debug_frame   0x000007c8      0x174 src\StepperControlTask.o
+ .debug_frame   0x0000093c       0x54 src\LEDControlTask.o
+ .debug_frame   0x00000990       0xec src\FreeRTOS_CLI.o
+ .debug_frame   0x00000a7c      0x23c src\FreeRTOS\timers.o
+ .debug_frame   0x00000cb8      0x75c src\FreeRTOS\tasks.o
+ .debug_frame   0x00001414      0x44c src\FreeRTOS\queue.o
+ .debug_frame   0x00001860       0x58 src\FreeRTOS\portable\MemMang\heap_3.o
+ .debug_frame   0x000018b8      0x19c src\FreeRTOS\portable\GCC\ARM_CM4F\port.o
+ .debug_frame   0x00001a54       0xd8 src\FreeRTOS\list.o
+ .debug_frame   0x00001b2c       0xf0 src\CLI-commands.o
+ .debug_frame   0x00001c1c       0xf4 Utilities\stm32f4_discovery.o
+ .debug_frame   0x00001d10      0x490 StdPeriph_Driver\src\stm32f4xx_usart.o
+ .debug_frame   0x000021a0      0xe54 StdPeriph_Driver\src\stm32f4xx_tim.o
+ .debug_frame   0x00002ff4       0xf4 StdPeriph_Driver\src\stm32f4xx_syscfg.o
+ .debug_frame   0x000030e8      0x6d4 StdPeriph_Driver\src\stm32f4xx_rcc.o
+ .debug_frame   0x000037bc      0x23c StdPeriph_Driver\src\stm32f4xx_gpio.o
+ .debug_frame   0x000039f8      0x148 StdPeriph_Driver\src\stm32f4xx_exti.o
+ .debug_frame   0x00003b40       0xd8 StdPeriph_Driver\src\misc.o
+ .debug_frame   0x00003c18       0x30 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-atoi.o)
+ .debug_frame   0x00003c48       0x20 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-errno.o)
+ .debug_frame   0x00003c68       0x2c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-init.o)
+ .debug_frame   0x00003c94       0x30 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-malloc.o)
+ .debug_frame   0x00003cc4       0x58 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mallocr.o)
+ .debug_frame   0x00003d1c       0x38 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memcmp.o)
+ .debug_frame   0x00003d54       0x34 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memset.o)
+ .debug_frame   0x00003d88       0x30 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mlock.o)
+ .debug_frame   0x00003db8       0x2c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-sbrkr.o)
+ .debug_frame   0x00003de4       0x84 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-sprintf.o)
+ .debug_frame   0x00003e68       0x20 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strcpy.o)
+ .debug_frame   0x00003e88       0x20 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strlen.o)
+ .debug_frame   0x00003ea8       0x30 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strncat.o)
+ .debug_frame   0x00003ed8       0x54 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strncmp.o)
+ .debug_frame   0x00003f2c       0x34 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strncpy.o)
+ .debug_frame   0x00003f60       0x54 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-strtol.o)
+ .debug_frame   0x00003fb4       0x40 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-svfprintf.o)
+ .debug_frame   0x00003ff4       0x50 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__call_atexit.o)
+ .debug_frame   0x00004044       0x20 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-atexit.o)
+ .debug_frame   0x00004064       0x88 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-dtoa.o)
+ .debug_frame   0x000040ec       0x34 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-fini.o)
+ .debug_frame   0x00004120       0x74 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-freer.o)
+ .debug_frame   0x00004194       0x9c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-locale.o)
+ .debug_frame   0x00004230       0x3c c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memchr.o)
+ .debug_frame   0x0000426c      0x268 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-mprec.o)
+ .debug_frame   0x000044d4       0x58 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-reent.o)
+ .debug_frame   0x0000452c       0x34 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-s_fpclassify.o)
+ .debug_frame   0x00004560       0x78 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-svfiprintf.o)
+ .debug_frame   0x000045d8       0x34 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-__atexit.o)
+ .debug_frame   0x0000460c       0x28 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-callocr.o)
+ .debug_frame   0x00004634       0x30 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-memmove.o)
+ .debug_frame   0x00004664       0x60 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/../../../../arm-none-eabi/lib/armv7e-m/fpu\libc.a(lib_a-reallocr.o)
+ .debug_frame   0x000046c4       0x28 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu\libgcc.a(_aeabi_uldivmod.o)
+ .debug_frame   0x000046ec       0x50 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu\libgcc.a(bpabi.o)
+ .debug_frame   0x0000473c       0x34 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu\libgcc.a(_divdi3.o)
+ .debug_frame   0x00004770       0x30 c:/users/patels/desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/bin/../lib/gcc/arm-none-eabi/4.9.3/armv7e-m/fpu\libgcc.a(_udivdi3.o)

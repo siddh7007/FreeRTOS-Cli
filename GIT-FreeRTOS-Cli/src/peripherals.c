@@ -216,3 +216,25 @@ void ENCR_Config(void)
 	//Enable Encoder
 	TIM_Cmd (TIM2, ENABLE);
 }
+
+/*================ GPIOs for OPTO Configuration =========================================  */
+
+void OPTO_Config(void)
+
+{
+	//Enable the clocks for the GPIOC
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
+
+	//Structures used configure the hardware
+	GPIO_InitTypeDef GPIO_InitStruct;
+
+	//Initialize pins GPIOC 14 and 15
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_14 | GPIO_Pin_15;
+	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
+    GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_25MHz;
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_Init(GPIOC, &GPIO_InitStruct);
+
+}
+
