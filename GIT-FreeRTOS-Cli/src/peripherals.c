@@ -156,25 +156,26 @@ void Stepper_Drive_Control_GPIO_Config(void)
 {
 	//Enable the clocks for the GPIOB, GPIOA and the TIM2
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOD, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOA, ENABLE);
 
 	//Structures used configure the hardware
 	GPIO_InitTypeDef GPIO_InitStruct;
 
     //Configure the GPIOD pin 3
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_3;
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_8;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
-	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOD, &GPIO_InitStruct);
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_DOWN;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_Init(GPIOC, &GPIO_InitStruct);
 
-    //Configure the GPIOD pin 4
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_4;
+    //Configure the GPIOA pin 8
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_8;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
 	GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
-	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
-	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
-	GPIO_Init(GPIOD, &GPIO_InitStruct);
+	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_100MHz;
+	GPIO_Init(GPIOA, &GPIO_InitStruct);
 }
 /*================ Encoder TIM Configuration =========================================  */
 
@@ -223,18 +224,34 @@ void OPTO_Config(void)
 
 {
 	//Enable the clocks for the GPIOC
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOC, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
+	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOH, ENABLE);
 
 	//Structures used configure the hardware
 	GPIO_InitTypeDef GPIO_InitStruct;
 
-	//Initialize pins GPIOC 14 and 15
-	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_14 | GPIO_Pin_15;
+	//Initialize pins GPIOE 5
+	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_5;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
-    GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
-    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_25MHz;
+    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
-	GPIO_Init(GPIOC, &GPIO_InitStruct);
+	GPIO_Init(GPIOE, &GPIO_InitStruct);
+
+//	//Initialize pins GPIOE 1
+//	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_3;
+//	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+//    GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+//	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
+//    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_100MHz;
+//	GPIO_Init(GPIOE, &GPIO_InitStruct);
+//
+//	//Initialize pins GPIOH 1
+//	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_1;
+//	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_OUT;
+//    GPIO_InitStruct.GPIO_OType = GPIO_OType_PP;
+//	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_UP;
+//    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_100MHz;
+//	GPIO_Init(GPIOH, &GPIO_InitStruct);
 
 }
 

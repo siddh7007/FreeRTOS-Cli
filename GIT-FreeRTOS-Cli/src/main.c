@@ -202,7 +202,6 @@ int main(void)
 
   SystemInit();
 
-  LED_Config();
 
 
 
@@ -223,6 +222,18 @@ int main(void)
   SysTick_CLKSourceConfig( SysTick_CLKSource_HCLK );
 
   vRegisterCLICommands();
+
+
+  LED_Config();
+
+  TIM3_Config();
+
+  OPTO_Config();
+
+  pwm_initconfig(2000);
+
+  Stepper_Drive_Control_GPIO_Config();
+
 
   vUARTCommandConsoleStart( mainUART_COMMAND_CONSOLE_STACK_SIZE, mainUART_COMMAND_CONSOLE_TASK_PRIORITY );
 

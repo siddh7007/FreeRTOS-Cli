@@ -9,17 +9,19 @@ volatile int32_t Codeur_total;
 int8_t RotationDirection_CW = 1 ;
 int8_t RotationDirection_CCW = 0 ;
 int32_t count = 0;
-int32_t cyclecount;
+int32_t cyclecount = 0;
 volatile char *wr[32] ;
-int n = 0 ;
-int m = 0;
+uint32_t n = 0 ;
+uint32_t m = 0;
 char CW = 1 ;
 char CCW = 0;
+int pwminitflag = 0 ;
 
 //LOCAL
-static volatile int16_t Codeur_old;
-static volatile int16_t Codeur_actual;
 char buffer[33];
+uint32_t TimFreq = 7000000;
+uint16_t Period ;
+uint16_t PrescalerValue ;
 
 /*
  * The task that implements the command console processing.
@@ -48,7 +50,7 @@ void vMotorControlStart( uint16_t mcStackSize, UBaseType_t mcPriority )
 
 static void prvMotorControlTask( void *pvParameters )
 {
-	//pwm_initconfig(5000);
+
 while(1)
 {
 	vTaskDelay(1000);
@@ -56,33 +58,22 @@ while(1)
 
 }
 
-int pwm_initconfig(uint32_t OutFreq,uint32_t steps)
+int pwm_initconfig(uint32_t OutFreq)
 
 {
-
-		Stepper_Control(ENABLE);
+		Stepper_Drive_Control_GPIO_Config();
 		TIM3_Config();
+		Stepper_Control(ENABLE);
 
 		TIM_TimeBaseInitTypeDef  TIM_TimeBaseStructure;
 		TIM_OCInitTypeDef  TIM_OCInitStructure;
 
-		uint16_t PrescalerValue ;
-
 		// Compute the Pre-scaler value
-
-		uint32_t TimFreq;
-		uint16_t Period ;
-
 		// TIM3 is 16bit timer so period,s max value can Be (0xffff) 65535
 		// that's why the lowest frequency we can achive is around 54 hz, with this config.
 
-		TimFreq = 7000000 ;
 		Period  = (TimFreq/OutFreq)- 1;
-
 		PrescalerValue = (uint16_t) ((SystemCoreClock /2) / TimFreq) - 1;
-
-		sprintf(wr, "************* Start: Prescal = %d period = %d \r\n ", PrescalerValue, Period);
-	    UART_write(USART1, wr);
 
 		//PrescalerValue = (uint16_t) 0;
 		//Time base configuration
@@ -105,19 +96,37 @@ int pwm_initconfig(uint32_t OutFreq,uint32_t steps)
 
 
 		TIM_ARRPreloadConfig(TIM3, ENABLE);
-		m = steps;
 		GPIO_SetBits(GPIOD, GPIO_Pin_15);
-		sprintf(wr, "************* Start: Freq = %d Steps = %d \r\n ", OutFreq, steps);
-	    UART_write(USART1, wr);
 
 		// TIM IT enable
 		TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
 
 		// TIM3 enable counter
-		TIM_Cmd(TIM3, ENABLE);
+		//TIM_Cmd(TIM3, ENABLE);
+		pwminitflag = 1 ;
 
 		return 0 ;
 }
+
+
+int pwm_steps(uint32_t steps,int Rot)
+
+{
+
+	if(pwminitflag == 0) pwm_initconfig(2000) ;
+	else {
+
+		Stepper_Direction(Rot);
+		m = steps;
+
+		// TIM3 enable counter
+		TIM_Cmd(TIM3, ENABLE);
+	}
+
+		return 0 ;
+}
+
+
 
 //Disable and reset TIM3 - PWM output
 int pwm_deinitconfig(void)
@@ -125,15 +134,13 @@ int pwm_deinitconfig(void)
 {
 
 	Stepper_Control(DISABLE);
-	TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
+//	TIM_ITConfig(TIM3, TIM_IT_Update, DISABLE);
 	TIM_Cmd(TIM3, DISABLE);
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, DISABLE);
-
 	sprintf(wr, "************* Stop: finished Steps = %d \r\n ", n/2);
     UART_write(USART1, wr);
-    GPIO_ResetBits(GPIOD, GPIO_Pin_15);
     n= 0;
     m =0;
+    pwminitflag = 0 ;
 
 	return 0 ;
 }
@@ -142,8 +149,9 @@ int pwm_deinitconfig(void)
 void Stepper_Control(int Control)
 
 {
-	if (Control) GPIO_ResetBits(GPIOD,GPIO_Pin_3);
-	else GPIO_SetBits(GPIOD,GPIO_Pin_3);
+
+	if (Control) GPIO_ResetBits(GPIOA,GPIO_Pin_8);
+	else GPIO_SetBits(GPIOA,GPIO_Pin_8);
 }
 
 
@@ -151,45 +159,20 @@ void Stepper_Control(int Control)
 void Stepper_Direction(int Rotation)
 
 {
-	if (Rotation == RotationDirection_CW ) GPIO_SetBits(GPIOD,GPIO_Pin_3);
-	else GPIO_ResetBits(GPIOD,GPIO_Pin_3);
+	if (Rotation == RotationDirection_CW ) GPIO_SetBits(GPIOC,GPIO_Pin_8);
+	else GPIO_ResetBits(GPIOC,GPIO_Pin_8);
 }
-
-//Encoder Read
-int32_t Encoder_Read(void)
-{
-    Codeur_old = Codeur_actual;
-    Codeur_actual = TIM_GetCounter (TIM2) ;
-    Codeur_count = Codeur_actual - Codeur_old;
-    Codeur_total += Codeur_count;
-    itoa (Codeur_total,buffer,10);
-    UART_write(USART1, buffer);
-    UART_write(USART1, "\r ");
-    return Codeur_total;
-}
-
-//Encoder counter reset
-void Encoder_Reset(void)
-
-{
-
-    __disable_irq();
-    Codeur_old = 0;
-    Codeur_total = 0;
-    TIM_SetCounter (TIM2, 0);
-    Encoder_Read();
-    __enable_irq();
-
-}
-
 
 void pulse_counter()
 
 {
-	  if ((n == m)) {
-		  pwm_deinitconfig();
-	  }
-
+	  if ((n == m))
+		  {
+		  TIM_Cmd(TIM3, DISABLE);
+		  Stepper_Control(DISABLE) ;
+		  n = 0;
+		  m = 0;
+		  }
 	  else n++ ;
 }
 
@@ -200,48 +183,45 @@ void pulse_counter()
 void clamp_home(void)
 
 {
-	if (GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_14) & GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_15) )
+	OPTO_Config();
+	int b = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5);
+	sprintf(wr, "************* Opto Status : %d \n\n ",b);
+	UART_write(USART1, wr);
+	if (b == 1)
 
 	{
-		do {
-
-			Stepper_Direction(CCW) ;
-			pwm_initconfig(1000,1000) ;
-
-		} while ( GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_14)) ;
+		while (b == 1){
+			pwm_steps(1000,CW) ;
+			b = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5);
+		}
 	}
 
 }
 
-int cycle_counter(int32_t Cycle)
+int cycle_counter(int32_t Frequncy,int32_t Cycle)
 
 {
 	sprintf(wr, "************* Requested Clamp Cycle : %d \n\n ",Cycle);
 	UART_write(USART1, wr);
-	clamp_home();
+	//clamp_home();
+
 
 	do {
-			int a = 0 ;
-			do {
+				pwm_steps(4000,CCW) ;
 
-				Stepper_Direction(CW) ;
-				pwm_initconfig(1000,1000) ;
+				vTaskDelay(10);
 
-				} while ( a == GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_15)) ;
-
-			vTaskDelay(100);
-
-			do {
-
-				Stepper_Direction(CW) ;
-				pwm_initconfig(1000,1000) ;
-
-				} while ( a == GPIO_ReadInputDataBit(GPIOC, GPIO_Pin_14)) ;
-
-
+				pwm_steps(4000,CW) ;
+				int a = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5) ;
+				while( a == 0 )
+				{
+					pwm_steps(50 ,CCW) ;
+					int a = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5) ;
+					vTaskDelay(2);
+				}
 
 			cyclecount++;
-			vTaskDelay(100);
+			vTaskDelay(2);
 
 			sprintf(wr, "************* Clamp Cycle : %d \r\n ",cyclecount);
 			UART_write(USART1, wr);
@@ -251,6 +231,36 @@ int cycle_counter(int32_t Cycle)
 	return 0;
 
 }
+
+
+//
+////Encoder Read
+//int32_t Encoder_Read(void)
+//{
+//    Codeur_old = Codeur_actual;
+//    Codeur_actual = TIM_GetCounter (TIM2) ;
+//    Codeur_count = Codeur_actual - Codeur_old;
+//    Codeur_total += Codeur_count;
+//    itoa (Codeur_total,buffer,10);
+//    UART_write(USART1, buffer);
+//    UART_write(USART1, "\r ");
+//    return Codeur_total;
+//}
+//
+////Encoder counter reset
+//void Encoder_Reset(void)
+//
+//{
+//
+//    __disable_irq();
+//    Codeur_old = 0;
+//    Codeur_total = 0;
+//    TIM_SetCounter (TIM2, 0);
+//    Encoder_Read();
+//    __enable_irq();
+
+//}
+
 
 
 

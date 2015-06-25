@@ -32,7 +32,7 @@ int dataAdd = 0;
 int i = 0 ;
 
 
-int pwm_initconfig(uint32_t,uint32_t);
+int pwm_initconfig(uint32_t);
 int pwm_deinitconfig(void);
 void Stepper_Direction(int);
 void Stepper_Control(int);
@@ -40,9 +40,10 @@ void Encoder_Reset(void);
 int32_t Encoder_Read(void);
 void motor_steps(int32_t);
 void pulse_counter(void);
+int pwm_steps(uint32_t,int);
 
 //******* Clamp-Specific functions *****************//
 
 void clamp_home(void);
-int cycle_counter(int32_t);
+int cycle_counter(int32_t, int32_t);
 #endif /* STEPPERCONTROLTASK_H_ */

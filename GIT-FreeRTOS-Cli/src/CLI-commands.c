@@ -106,8 +106,11 @@
 /*
  * Implements the Stepper Motor Control command.
  */
-static BaseType_t prvStepperControlCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString );
-
+static BaseType_t prvClampCycleCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString );
+ /*
+  * Implements the Stepper Motor Control command.
+  */
+ static BaseType_t prvStepperControlCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString );
 /*
  * Implements the task-stats command.
  */
@@ -152,6 +155,19 @@ static const CLI_Command_Definition_t xStepperControl =
 	"\r\nstep-motor <Command> <frequency> <Steps>:\r\n Command start/stop \r\n PWM output frequency is 54Hz-7MHz \r\n",
 	prvStepperControlCommand, /* The function to run. */
 	3 /* No parameters are expected. */
+};
+
+
+/* Structure that defines the "step-motor" command line command.   This
+generates a table that shows how much run time each task has */
+
+
+static const CLI_Command_Definition_t xClampCycle =
+{
+	"clamp-cycle", /* The command string to type. */
+	"\r\nclamp-cycle <frequency> <Count>:\r\n PWM output frequency is 54Hz-7MHz \r\n",
+	prvClampCycleCommand, /* The function to run. */
+	2 /* No parameters are expected. */
 };
 
 
@@ -225,11 +241,13 @@ static const CLI_Command_Definition_t xParameterEcho =
 void vRegisterCLICommands( void )
 {
 	/* Register all the command line commands defined immediately above. */
+	FreeRTOS_CLIRegisterCommand( &xClampCycle );
 	FreeRTOS_CLIRegisterCommand( &xTaskStats );
 	FreeRTOS_CLIRegisterCommand( &xRunTimeStats );
 	FreeRTOS_CLIRegisterCommand( &xThreeParameterEcho );
 	FreeRTOS_CLIRegisterCommand( &xParameterEcho );
 	FreeRTOS_CLIRegisterCommand( &xStepperControl );
+
 
 	#if( configINCLUDE_QUERY_HEAP_COMMAND == 1 )
 	{
@@ -242,6 +260,67 @@ void vRegisterCLICommands( void )
 		FreeRTOS_CLIRegisterCommand( &xStartStopTrace );
 	}
 	#endif
+}
+
+
+/*----------------------- Stepper Motor Control Command ------------------------------------*/
+
+BaseType_t prvClampCycleCommand( char *pcWriteBuffer, size_t xWriteBufferLen, const char *pcCommandString )
+{
+const char *pcParameter;
+const char *pcParameter1;
+BaseType_t lParameterStringLength;
+
+	/* Remove compile time warnings about unused parameters, and check the
+	write buffer is not NULL.  NOTE - for simplicity, this example assumes the
+	write buffer length is adequate, so does not check for buffer overflows. */
+	( void ) pcCommandString;
+	( void ) xWriteBufferLen;
+	configASSERT( pcWriteBuffer );
+	uint32_t Freq, Cycle ;
+	int Rotation ;
+	/* Obtain the parameter string. */
+
+	memset( pcWriteBuffer, 0x00, xWriteBufferLen );
+
+	pcParameter1 = FreeRTOS_CLIGetParameter
+					(
+						pcCommandString,		/* The command string itself. */
+						1,						/* Return the first parameter. */
+						&lParameterStringLength	/* Store the parameter string length. */
+					);
+
+	 Freq = atoi(pcParameter1);
+	 Freq = Freq*2;
+	//sprintf( pcWriteBuffer, "%s: ", pcParameter );
+
+	pcParameter1 = FreeRTOS_CLIGetParameter
+					(
+						pcCommandString,		/* The command string itself. */
+						2,						/* Return the first parameter. */
+						&lParameterStringLength	/* Store the parameter string length. */
+					);
+
+	 Cycle = atoi(pcParameter1);
+
+	/* There are only two valid parameter values. */
+	if( Freq >= 55 )
+	{
+		/* Start or restart Motor. */
+
+		cycle_counter(Freq,Cycle) ;
+
+	}
+
+	else
+	{
+		memset( pcWriteBuffer, 0x00, xWriteBufferLen );
+		sprintf( pcWriteBuffer, "frequency must be 55Hz or above \n" );
+	}
+
+	/* There is no more data to return after this single string, so return
+	pdFALSE. */
+	return pdFALSE;
 }
 
 
@@ -261,6 +340,7 @@ BaseType_t lParameterStringLength;
 	( void ) xWriteBufferLen;
 	configASSERT( pcWriteBuffer );
 	uint32_t Freq, Steps ;
+	int Rotation ;
 	/* Obtain the parameter string. */
 
 	memset( pcWriteBuffer, 0x00, xWriteBufferLen );
@@ -273,6 +353,7 @@ BaseType_t lParameterStringLength;
 					);
 	//sprintf( pcWriteBuffer, "%s: ", pcParameter );
 
+
 	pcParameter1 = FreeRTOS_CLIGetParameter
 					(
 						pcCommandString,		/* The command string itself. */
@@ -280,9 +361,33 @@ BaseType_t lParameterStringLength;
 						&lParameterStringLength	/* Store the parameter string length. */
 					);
 
-	 Freq = atoi(pcParameter1);
-	 Freq = Freq*2;
+
+	if( strncmp(pcParameter1, "cw", strlen( "cw" ) ) == 0 )
+	{
+		/* Clockwise. */
+		Rotation = 1 ;
+
+	}
+	else if( strncmp( pcParameter1, "ccw", strlen( "ccw" ) ) == 0 )
+	{
+		/* Counter Clockwise */
+		Rotation = 0 ;
+	}
+
+	else if( strncmp( pcParameter1, "0", strlen( "0" ) ) == 0 )
+	{
+		/* Counter Clockwise */
+		Rotation = 1 ;
+	}
+	else
+	{
+		memset( pcWriteBuffer, 0x00, xWriteBufferLen );
+		sprintf( pcWriteBuffer, "Valid parameters are 'CW' and 'CCW'.\n" );
+		return pdFALSE;
+	}
+
 	//sprintf( pcWriteBuffer, "%s: ", pcParameter );
+
 
 	pcParameter1 = FreeRTOS_CLIGetParameter
 					(
@@ -292,8 +397,9 @@ BaseType_t lParameterStringLength;
 					);
 
 	 Steps = atoi(pcParameter1);
-	 Steps = Steps*2;
-	//sprintf( pcWriteBuffer, "%s: ", pcParameter );
+	 Steps = Steps*2 -1 ;
+
+
 
 	/* Sanity check something was returned. */
 //	configASSERT( pcParameter );
@@ -303,11 +409,13 @@ BaseType_t lParameterStringLength;
 	{
 		/* Start or restart Motor. */
 
-		pwm_initconfig(Freq, Steps) ;
+		pwm_steps(Steps, Rotation);
 
 
 		//sprintf(pcWriteBuffer,"Control: %s Frequency: %d  Steps : %d END \n",pcParameter,Freq,Steps);
 	}
+
+
 	else if( strncmp( pcParameter, "stop", strlen( "stop" ) ) == 0 )
 	{
 		/* End the trace, if one is running. */
@@ -325,8 +433,6 @@ BaseType_t lParameterStringLength;
 	pdFALSE. */
 	return pdFALSE;
 }
-
-/*-----------------------------------------------------------*/
 
 
 
