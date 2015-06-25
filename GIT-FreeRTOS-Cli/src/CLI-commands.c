@@ -397,7 +397,7 @@ BaseType_t lParameterStringLength;
 					);
 
 	 Steps = atoi(pcParameter1);
-	 Steps = Steps*2 -1 ;
+	 //Steps = Steps*2 -1 ;
 
 
 

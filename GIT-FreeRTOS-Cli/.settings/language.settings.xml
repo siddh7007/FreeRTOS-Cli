@@ -5,17 +5,17 @@
 			<provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>
 			<provider-reference id="org.eclipse.cdt.core.ReferencedProjectsLanguageSettingsProvider" ref="shared-provider"/>
 			<provider-reference id="org.eclipse.cdt.managedbuilder.core.MBSLanguageSettingsProvider" ref="shared-provider"/>
-			<provider class="fr.ac6.mcu.ide.build.CrossBuiltinSpecsDetector" console="false" env-hash="-606754373951041232" id="fr.ac6.mcu.ide.build.CrossBuiltinSpecsDetector" keep-relative-paths="false" name="Ac6 SW4 STM32 MCU Built-in Compiler Settings" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true" store-entries-with-project="true">
+			<provider class="fr.ac6.mcu.ide.build.CrossBuiltinSpecsDetector" console="false" env-hash="-970432181844519556" id="fr.ac6.mcu.ide.build.CrossBuiltinSpecsDetector" keep-relative-paths="false" name="Ac6 SW4 STM32 MCU Built-in Compiler Settings" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true" store-entries-with-project="true">
 				<language-scope id="org.eclipse.cdt.core.gcc"/>
 				<language-scope id="org.eclipse.cdt.core.g++"/>
 				<language id="org.eclipse.cdt.core.gcc">
-					<entry kind="includePath" name="C:/Users/patels/Desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/lib/gcc/arm-none-eabi/4.9.3/include">
+					<entry kind="includePath" name="C:/Embedded/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/lib/gcc/arm-none-eabi/4.9.3/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="C:/Users/patels/Desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/lib/gcc/arm-none-eabi/4.9.3/include-fixed">
+					<entry kind="includePath" name="C:/Embedded/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/lib/gcc/arm-none-eabi/4.9.3/include-fixed">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="C:/Users/patels/Desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/arm-none-eabi/include">
+					<entry kind="includePath" name="C:/Embedded/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/arm-none-eabi/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__ACCUM_EPSILON__" value="0x1P-15K">
@@ -1046,22 +1046,22 @@
 					</entry>
 				</language>
 				<language id="org.eclipse.cdt.core.g++">
-					<entry kind="includePath" name="C:/Users/patels/Desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/arm-none-eabi/include/c++/4.9.3">
+					<entry kind="includePath" name="C:/Embedded/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/arm-none-eabi/include/c++/4.9.3">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="C:/Users/patels/Desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/arm-none-eabi/include/c++/4.9.3/arm-none-eabi">
+					<entry kind="includePath" name="C:/Embedded/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/arm-none-eabi/include/c++/4.9.3/arm-none-eabi">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="C:/Users/patels/Desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/arm-none-eabi/include/c++/4.9.3/backward">
+					<entry kind="includePath" name="C:/Embedded/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/arm-none-eabi/include/c++/4.9.3/backward">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="C:/Users/patels/Desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/lib/gcc/arm-none-eabi/4.9.3/include">
+					<entry kind="includePath" name="C:/Embedded/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/lib/gcc/arm-none-eabi/4.9.3/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="C:/Users/patels/Desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/lib/gcc/arm-none-eabi/4.9.3/include-fixed">
+					<entry kind="includePath" name="C:/Embedded/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/lib/gcc/arm-none-eabi/4.9.3/include-fixed">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
-					<entry kind="includePath" name="C:/Users/patels/Desktop/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/arm-none-eabi/include">
+					<entry kind="includePath" name="C:/Embedded/eclipse/plugins/fr.ac6.mcu.externaltools.arm-none.win32_1.2.0.201505291716/tools/compiler/arm-none-eabi/include">
 						<flag value="BUILTIN|READONLY"/>
 					</entry>
 					<entry kind="macro" name="__ACCUM_EPSILON__" value="0x1P-15K">
@@ -2123,7 +2123,7 @@
 			<provider copy-of="extension" id="org.eclipse.cdt.ui.UserLanguageSettingsProvider"/>
 			<provider-reference id="org.eclipse.cdt.core.ReferencedProjectsLanguageSettingsProvider" ref="shared-provider"/>
 			<provider-reference id="org.eclipse.cdt.managedbuilder.core.MBSLanguageSettingsProvider" ref="shared-provider"/>
-			<provider class="fr.ac6.mcu.ide.build.CrossBuiltinSpecsDetector" console="false" env-hash="-606754373951041232" id="fr.ac6.mcu.ide.build.CrossBuiltinSpecsDetector" keep-relative-paths="false" name="Ac6 SW4 STM32 MCU Built-in Compiler Settings" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
+			<provider class="fr.ac6.mcu.ide.build.CrossBuiltinSpecsDetector" console="false" env-hash="-970432181844519556" id="fr.ac6.mcu.ide.build.CrossBuiltinSpecsDetector" keep-relative-paths="false" name="Ac6 SW4 STM32 MCU Built-in Compiler Settings" parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;" prefer-non-shared="true">
 				<language-scope id="org.eclipse.cdt.core.gcc"/>
 				<language-scope id="org.eclipse.cdt.core.g++"/>
 			</provider>

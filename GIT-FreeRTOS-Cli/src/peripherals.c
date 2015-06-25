@@ -225,7 +225,7 @@ void OPTO_Config(void)
 {
 	//Enable the clocks for the GPIOC
 	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOE, ENABLE);
-	RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOH, ENABLE);
+//  RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_GPIOH, ENABLE);
 
 	//Structures used configure the hardware
 	GPIO_InitTypeDef GPIO_InitStruct;
@@ -233,7 +233,7 @@ void OPTO_Config(void)
 	//Initialize pins GPIOE 5
 	GPIO_InitStruct.GPIO_Pin = GPIO_Pin_5;
 	GPIO_InitStruct.GPIO_Mode = GPIO_Mode_IN;
-    GPIO_InitStruct.GPIO_Speed = GPIO_Speed_50MHz;
+	GPIO_InitStruct.GPIO_Speed = GPIO_Speed_100MHz;
 	GPIO_InitStruct.GPIO_PuPd = GPIO_PuPd_NOPULL;
 	GPIO_Init(GPIOE, &GPIO_InitStruct);
 

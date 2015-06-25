@@ -51,5 +51,8 @@ static void prvLEDControlTask(void * pvparameters)
     vTaskDelay(1000);
     GPIO_ResetBits(GPIOD, LED4_PIN | LED3_PIN | LED5_PIN | LED6_PIN);  // All LEDs are OFF.
     vTaskDelay(1000);
+//    int c = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5);
+//	  sprintf(wr, "************* Opto status = %d \r\n ", GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5));
+//    UART_write(USART1, wr);
   }
 }

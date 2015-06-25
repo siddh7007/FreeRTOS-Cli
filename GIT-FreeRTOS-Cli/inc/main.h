@@ -50,7 +50,7 @@ USART_InitTypeDef USART_InitStructure;
 //notice the use of the volatile keyword this is important as without it the compiler may make
 //optimisations assuming the value of this variable hasnt changed
 volatile char received_buffer[BUFFER_SIZE+1];
-
+volatile char *wr[32] ;
 
 //static uint8_t DataReceivedCounter = 0; //tracks the number of characters received so far, reset after each command
 

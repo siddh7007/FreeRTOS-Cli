@@ -9,8 +9,7 @@ volatile int32_t Codeur_total;
 int8_t RotationDirection_CW = 1 ;
 int8_t RotationDirection_CCW = 0 ;
 int32_t count = 0;
-int32_t cyclecount = 0;
-volatile char *wr[32] ;
+uint32_t cyclecount = 0;
 uint32_t n = 0 ;
 uint32_t m = 0;
 char CW = 1 ;
@@ -87,7 +86,7 @@ int pwm_initconfig(uint32_t OutFreq)
 		// PWM1 Mode configuration: Channel1
 		TIM_OCInitStructure.TIM_OCMode = TIM_OCMode_PWM2;
 		TIM_OCInitStructure.TIM_OutputState = TIM_OutputState_Enable;
-		TIM_OCInitStructure.TIM_Pulse = Period / 2;
+		TIM_OCInitStructure.TIM_Pulse = 1750;
 		TIM_OCInitStructure.TIM_OCPolarity = TIM_OCPolarity_High;
 
 		TIM_OC1Init(TIM3, &TIM_OCInitStructure);
@@ -112,12 +111,19 @@ int pwm_initconfig(uint32_t OutFreq)
 int pwm_steps(uint32_t steps,int Rot)
 
 {
+	steps = steps*2 -1 ;
+	sprintf(wr, "************* pwminitflag = %d \r\n ", pwminitflag);
+    UART_write(USART1, wr);
 
 	if(pwminitflag == 0) pwm_initconfig(2000) ;
 	else {
 
+		sprintf(wr, "************* start : Steps = %d \r\n ", steps);
+	    UART_write(USART1, wr);
+
 		Stepper_Direction(Rot);
 		m = steps;
+		Stepper_Control(ENABLE);
 
 		// TIM3 enable counter
 		TIM_Cmd(TIM3, ENABLE);
@@ -183,17 +189,20 @@ void pulse_counter()
 void clamp_home(void)
 
 {
-	OPTO_Config();
-	int b = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5);
-	sprintf(wr, "************* Opto Status : %d \n\n ",b);
-	UART_write(USART1, wr);
-	if (b == 1)
+
+
+
+	if (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5))
 
 	{
-		while (b == 1){
-			pwm_steps(1000,CW) ;
-			b = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5);
+		while (GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5)){
+			vTaskDelay(50);
+			pwm_steps(50,CW) ;
+
+			sprintf(wr, "************* Opto Status : %d \n\n ",GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5));
+			UART_write(USART1, wr);
 		}
+
 	}
 
 }
@@ -205,28 +214,32 @@ int cycle_counter(int32_t Frequncy,int32_t Cycle)
 	UART_write(USART1, wr);
 	//clamp_home();
 
+uint32_t e ;
+	for( e=0 ; e<= Cycle;e++) {
 
-	do {
-				pwm_steps(4000,CCW) ;
 
-				vTaskDelay(10);
 
-				pwm_steps(4000,CW) ;
-				int a = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5) ;
-				while( a == 0 )
-				{
-					pwm_steps(50 ,CCW) ;
-					int a = GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5) ;
-					vTaskDelay(2);
-				}
+				pwm_steps(2500,CCW) ;
 
-			cyclecount++;
-			vTaskDelay(2);
+				vTaskDelay(2000);
 
-			sprintf(wr, "************* Clamp Cycle : %d \r\n ",cyclecount);
+				pwm_steps(2500,CW) ;
+
+				vTaskDelay(2500);
+
+//				while( GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_5) )
+//				{
+//					pwm_steps(50 ,CW) ;
+//
+//					vTaskDelay(50);
+//				}
+
+
+			sprintf(wr, "************* Clamp Cycle : %d Clamp Cyclecount : %d\r\n ",cyclecount,cyclecount);
 			UART_write(USART1, wr);
 
-	} while (Cycle == cyclecount);
+	}
+	Cycle = 0;
 
 	return 0;
 
